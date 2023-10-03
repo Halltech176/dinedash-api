@@ -3,7 +3,7 @@
 // Use Ctrl+Space inside a snippet or a string literal to trigger completions.
 
 //Delete all collections  in the database
-const database = 'ExpressStarter';
+const database = 'ScreenClass';
 const collection = 'NEW_COLLECTION_NAME';
 
 // The current database to use.
