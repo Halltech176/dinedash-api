@@ -1,6 +1,7 @@
 import { DocumentType, getModelForClass } from '@typegoose/typegoose';
 import { Profile } from './profileModel';
 import { File } from '../features/file/schema';
+import { QuizZone } from '../features/quizZone/schema';
 import { Token } from './token';
 import { User } from './userModel';
 import { PassportLocalModel } from 'mongoose';
@@ -10,5 +11,6 @@ export type UserModelType = typeof UserMod &
   PassportLocalModel<DocumentType<User>>;
 export const UserModel = UserMod as UserModelType;
 export const ProfileModel = getModelForClass(Profile);
+export const QuizZoneModel = getModelForClass(QuizZone);
 export const FileModel = getModelForClass(File);
 export const TokenModel = getModelForClass(Token);
