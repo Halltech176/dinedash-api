@@ -13,7 +13,7 @@ import {
   ValidationArguments,
   isNotEmpty,
 } from 'class-validator';
-import { QuizZone } from './schema';
+import { Question, QuestionType } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Type } from 'class-transformer';
 import { Category } from '../category/schema';
@@ -22,21 +22,7 @@ import { Ref } from '@typegoose/typegoose';
 import { LanguageName } from '../category/dto';
 const doc: IDocs = {};
 
-// class TQuizOptions implements QuizOptions {
-//   @IsString()
-//   value: string;
-//   @IsBoolean()
-//   isCorrect: boolean;
-
-//   @IsNumber({
-//     allowNaN: false,
-//     allowInfinity: false,
-//     maxDecimalPlaces: 0,
-//   })
-//   correlationLevel: number;
-// }
-
-export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
+export class CreateQuestionDto implements Omit<Question, 'createdBy'> {
   @IsString()
   question: string;
 
@@ -53,9 +39,14 @@ export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
   @IsNumber()
   correctOptionIndex: number;
 
+  @IsString()
+  type: QuestionType;
+
+  @IsOptional()
   @IsMongoId()
   category: Ref<Category>;
 
+  @IsOptional()
   @IsMongoId()
   subCategory: Ref<Category>;
 
@@ -68,14 +59,14 @@ export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
 
 doc['/'] = {
   POST: {
-    schema: CreateQuizZoneDto.name,
+    schema: CreateQuestionDto.name,
   },
 };
 
-export class UpdateQuizZoneDto extends CreateQuizZoneDto {}
+export class UpdateQuestionDto extends CreateQuestionDto {}
 
 doc['/'] = {
   PUT: {
-    schema: UpdateQuizZoneDto.name,
+    schema: UpdateQuestionDto.name,
   },
 };

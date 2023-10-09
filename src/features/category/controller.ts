@@ -1,45 +1,34 @@
 import express, { Request, Response } from 'express';
 import {
-  canCreateQuizZone,
-  canDeleteQuizZone,
-  canFetchQuizZone,
-  canUpdateQuizZone,
+  canCreateCategory,
+  canDeleteCategory,
+  canFetchCategory,
+  canUpdateCategory,
 } from './guard';
-import QuizZoneService from './service';
+import CategoryService from './service';
 import response, {
   throwIfError,
   throwPermIfError,
 } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { UpdateQuizZoneDto } from './dto';
-import CategoryService from '../category/service';
-import { Category } from '../category/schema';
+import { UpdateCategoryDto } from './dto';
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canCreateQuizZone(req, true));
-  console.log({ perm });
-
-  // const category =
-
+  const perm = throwPermIfError(await canCreateCategory(req, true));
   const content = throwIfError(
-    await QuizZoneService.create(req.body, {
+    await CategoryService.create(req.body, {
       ...perm.query,
     }),
   );
-
-  console.log({ content, body: req.body });
-
-  const { category, description, image, subCategory } = req.body;
-
   return response(res, content.statusCode, content.message, content.data);
 });
 
 router.get('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchQuizZone(req, false));
+  const perm = throwPermIfError(await canFetchCategory(req, false));
   const content = throwIfError(
-    await QuizZoneService.fetch(req.query, {
+    await CategoryService.fetch(req.query, {
       ...perm.query,
     }),
   );
@@ -47,23 +36,22 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchQuizZone(req, false));
+  const perm = throwPermIfError(await canFetchCategory(req, false));
   const content = throwIfError(
-    await QuizZoneService.fetchOne(req.query, {
+    await CategoryService.fetchOne(req.query, {
       _id: req.params.id,
       ...perm.query,
     }),
   );
-
   return response(res, content.statusCode, content.message, content.data);
 });
 
 router.put('/:id', async (req: Request, res: Response) => {
-  const body = validateDTO(UpdateQuizZoneDto, req.body);
+  const body = validateDTO(UpdateCategoryDto, req.body);
 
-  const perm = throwPermIfError(await canUpdateQuizZone(req, false));
+  const perm = throwPermIfError(await canUpdateCategory(req, false));
   const content = throwIfError(
-    await QuizZoneService.updateOne(
+    await CategoryService.updateOne(
       { _id: req.params.id, ...perm.query },
       body,
     ),
@@ -72,9 +60,9 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 router.delete('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canDeleteQuizZone(req, false));
+  const perm = throwPermIfError(await canDeleteCategory(req, false));
   const content = throwIfError(
-    await QuizZoneService.deleteOne(req.params.id, {
+    await CategoryService.deleteOne(req.params.id, {
       ...perm.query,
     }),
   );

@@ -1,28 +1,28 @@
-import { Document, QueryOptions, UpdateQuery } from 'mongoose';
+import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateQuizZoneDto, UpdateQuizZoneDto } from './dto';
-import { QuizZone } from './schema';
+import { CreateQuestionDto, UpdateQuestionDto } from './dto';
+import { Question } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { QuizZoneModel, CategoryModel } from '../../models';
-import { CreateCategoryDto } from '../category/dto';
+import { QuestionModel } from '../../models';
 
-export default class QuizZoneService {
+export default class QuestionService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundQuizZones;
+      let foundQuestions;
       if (conditions) {
-        foundQuizZones = await find(QuizZoneModel, queries, conditions);
-      } else {
-        foundQuizZones = await find(QuizZoneModel, queries);
+        foundQuestions = await find(QuestionModel, queries, conditions);
+      }
+      else {
+      foundQuestions = await find(QuestionModel, queries);
       }
       return {
         success: true,
-        message: 'Quiz Zones fetched successfully',
-        data: foundQuizZones,
+        message: 'Questions fetched successfully',
+        data: foundQuestions,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,23 +35,17 @@ export default class QuizZoneService {
   }
 
   static async create(
-    payload: CreateQuizZoneDto,
-    data: Partial<QuizZone> = {},
-  ): Promise<serviceResponseType<QuizZone & Document>> {
-    // return await QuizZoneModel.create(data);
-
-    validateDTO(CreateQuizZoneDto, payload);
-
+    payload: CreateQuestionDto,
+    data: Partial<Question> = {},
+  ): Promise<serviceResponseType<Question>> {
+    // return await QuestionModel.create(data);
+    validateDTO(CreateQuestionDto, payload);
     try {
-      const createdQuizZone = await QuizZoneModel.create({
-        ...payload,
-        ...data,
-      });
-
+      const createdQuestion = await QuestionModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Quiz Zone created successfully',
-        data: createdQuizZone,
+        message: 'Question created successfully',
+        data: createdQuestion,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -68,16 +62,17 @@ export default class QuizZoneService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundQuizZone;
+      let foundQuestion;
       if (conditions) {
-        foundQuizZone = await findOne(QuizZoneModel, queries, conditions);
-      } else {
-        foundQuizZone = await findOne(QuizZoneModel, queries);
+        foundQuestion = await findOne(QuestionModel, queries, conditions);
+      }
+      else {
+      foundQuestion = await findOne(QuestionModel, queries);
       }
       return {
         success: true,
-        message: 'Quiz Zone fetched successfully',
-        data: foundQuizZone,
+        message: 'Question fetched successfully',
+        data: foundQuestion,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -91,33 +86,33 @@ export default class QuizZoneService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial<UpdateQuizZoneDto>,
-    others: UpdateQuery<QuizZone> & Partial<QuizZone> = {},
+    data: Partial< UpdateQuestionDto>,
+    others: UpdateQuery<Question> & Partial<Question> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<QuizZone | null>> {
+  ): Promise<serviceResponseType<Question | null>> {
     try {
-      // const foundQuizZone = await findOne(QuizZoneModel, queries);
-      // if (!foundQuizZone) {
+      // const foundQuestion = await findOne(QuestionModel, queries);
+      // if (!foundQuestion) {
       //   throw {
-      //     message: 'Quiz Zone not found or access denied',
+      //     message: 'Question not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedQuizZone = await QuizZoneModel.findOneAndUpdate(
+      const updatedQuestion = await QuestionModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedQuizZone) {
+      if (!updatedQuestion) {
         throw {
-          message: 'Quiz Zone not found or access denied',
+          message: 'Question not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Quiz Zone updated successfully',
-        data: updatedQuizZone,
+        message: 'Question updated successfully',
+        data: updatedQuestion,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -132,31 +127,31 @@ export default class QuizZoneService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<QuizZone | null>> {
+  ): Promise<serviceResponseType<Question | null>> {
     try {
-      // const foundQuizZone = await findOne(QuizZoneModel, queries, {
+      // const foundQuestion = await findOne(QuestionModel, queries, {
       //   _id: id,
       // });
-      // if (!foundQuizZone) {
+      // if (!foundQuestion) {
       //   throw {
-      //     message: 'Quiz Zone not found or access denied',
+      //     message: 'Question not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedQuizZone = await QuizZoneModel.findOneAndDelete({
+      const deletedQuestion = await QuestionModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedQuizZone) {
+      if (!deletedQuestion) {
         throw {
-          message: 'Quiz Zone not found or access denied',
+          message: 'Question not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Quiz Zone deleted successfully',
-        data: deletedQuizZone,
+        message: 'Question deleted successfully',
+        data: deletedQuestion,
         statusCode: 204,
       };
     } catch (error: any) {

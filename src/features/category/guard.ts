@@ -1,13 +1,13 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateQuizZone: GuardFunction = async (req, exec) => {
+export const canCreateCategory: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
-    // throw neBw Error('Not implemented');
+    // throw new Error('Not implemented');
     return {
       auth: true,
-      message: 'Can create QuizZone',
+      message: 'Can create Category',
       query: {
         createdBy: req.user._id,
       },
@@ -21,12 +21,12 @@ export const canCreateQuizZone: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canFetchQuizZone: GuardFunction = async (req, exec) => {
+export const canFetchCategory: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super', 'individual']);
+    await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can fetch QuizZone',
+      message: 'Can fetch Category',
       query: {},
     };
   } catch (error) {
@@ -38,12 +38,12 @@ export const canFetchQuizZone: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canUpdateQuizZone: GuardFunction = async (req, exec) => {
+export const canUpdateCategory: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can update QuizZone',
+      message: 'Can update Category',
       query: {},
     };
   } catch (error) {
@@ -55,12 +55,12 @@ export const canUpdateQuizZone: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canDeleteQuizZone: GuardFunction = async (req, exec) => {
+export const canDeleteCategory: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can delete QuizZone',
+      message: 'Can delete Category',
       query: {},
     };
   } catch (error) {

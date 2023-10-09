@@ -1,28 +1,27 @@
-import { Document, QueryOptions, UpdateQuery } from 'mongoose';
+import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateQuizZoneDto, UpdateQuizZoneDto } from './dto';
-import { QuizZone } from './schema';
+import { CreateQuizDto, UpdateQuizDto } from './dto';
+import { Quiz } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { QuizZoneModel, CategoryModel } from '../../models';
-import { CreateCategoryDto } from '../category/dto';
+import { QuizModel } from '../../models';
 
-export default class QuizZoneService {
+export default class QuizService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundQuizZones;
+      let foundQuizs;
       if (conditions) {
-        foundQuizZones = await find(QuizZoneModel, queries, conditions);
+        foundQuizs = await find(QuizModel, queries, conditions);
       } else {
-        foundQuizZones = await find(QuizZoneModel, queries);
+        foundQuizs = await find(QuizModel, queries);
       }
       return {
         success: true,
-        message: 'Quiz Zones fetched successfully',
-        data: foundQuizZones,
+        message: 'Quizs fetched successfully',
+        data: foundQuizs,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,23 +34,17 @@ export default class QuizZoneService {
   }
 
   static async create(
-    payload: CreateQuizZoneDto,
-    data: Partial<QuizZone> = {},
-  ): Promise<serviceResponseType<QuizZone & Document>> {
-    // return await QuizZoneModel.create(data);
-
-    validateDTO(CreateQuizZoneDto, payload);
-
+    payload: CreateQuizDto,
+    data: Partial<Quiz> = {},
+  ): Promise<serviceResponseType<Quiz>> {
+    // return await QuizModel.create(data);
+    validateDTO(CreateQuizDto, payload);
     try {
-      const createdQuizZone = await QuizZoneModel.create({
-        ...payload,
-        ...data,
-      });
-
+      const createdQuiz = await QuizModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Quiz Zone created successfully',
-        data: createdQuizZone,
+        message: 'Quiz created successfully',
+        data: createdQuiz,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -68,16 +61,16 @@ export default class QuizZoneService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundQuizZone;
+      let foundQuiz;
       if (conditions) {
-        foundQuizZone = await findOne(QuizZoneModel, queries, conditions);
+        foundQuiz = await findOne(QuizModel, queries, conditions);
       } else {
-        foundQuizZone = await findOne(QuizZoneModel, queries);
+        foundQuiz = await findOne(QuizModel, queries);
       }
       return {
         success: true,
-        message: 'Quiz Zone fetched successfully',
-        data: foundQuizZone,
+        message: 'Quiz fetched successfully',
+        data: foundQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -91,33 +84,33 @@ export default class QuizZoneService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial<UpdateQuizZoneDto>,
-    others: UpdateQuery<QuizZone> & Partial<QuizZone> = {},
+    data: Partial<UpdateQuizDto>,
+    others: UpdateQuery<Quiz> & Partial<Quiz> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<QuizZone | null>> {
+  ): Promise<serviceResponseType<Quiz | null>> {
     try {
-      // const foundQuizZone = await findOne(QuizZoneModel, queries);
-      // if (!foundQuizZone) {
+      // const foundQuiz = await findOne(QuizModel, queries);
+      // if (!foundQuiz) {
       //   throw {
-      //     message: 'Quiz Zone not found or access denied',
+      //     message: 'Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedQuizZone = await QuizZoneModel.findOneAndUpdate(
+      const updatedQuiz = await QuizModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedQuizZone) {
+      if (!updatedQuiz) {
         throw {
-          message: 'Quiz Zone not found or access denied',
+          message: 'Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Quiz Zone updated successfully',
-        data: updatedQuizZone,
+        message: 'Quiz updated successfully',
+        data: updatedQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -132,31 +125,31 @@ export default class QuizZoneService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<QuizZone | null>> {
+  ): Promise<serviceResponseType<Quiz | null>> {
     try {
-      // const foundQuizZone = await findOne(QuizZoneModel, queries, {
+      // const foundQuiz = await findOne(QuizModel, queries, {
       //   _id: id,
       // });
-      // if (!foundQuizZone) {
+      // if (!foundQuiz) {
       //   throw {
-      //     message: 'Quiz Zone not found or access denied',
+      //     message: 'Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedQuizZone = await QuizZoneModel.findOneAndDelete({
+      const deletedQuiz = await QuizModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedQuizZone) {
+      if (!deletedQuiz) {
         throw {
-          message: 'Quiz Zone not found or access denied',
+          message: 'Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Quiz Zone deleted successfully',
-        data: deletedQuizZone,
+        message: 'Quiz deleted successfully',
+        data: deletedQuiz,
         statusCode: 204,
       };
     } catch (error: any) {

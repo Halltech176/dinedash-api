@@ -12,13 +12,13 @@ export default function errorHandler(
   res: any,
   next: NextFunction,
 ) {
-  console.log("In Error Handler")
+  console.log('In Error Handler');
   if (err.data && err.data?.message) {
-    console.log("Error Data")
+    console.log('Error Data');
     err = err.data;
   }
   if (axios.isAxiosError(err)) {
-    console.log("Axios Error")
+    console.log('Axios Error');
     const aerr: AxiosError = err;
     return response(
       res,
@@ -27,7 +27,14 @@ export default function errorHandler(
       aerr.response?.data,
     );
   }
-  console.error('errorHandler starts', err.name, { err }, err?.data, 'errorHandler ends', axios.isAxiosError(err));
+  console.error(
+    'errorHandler starts',
+    err.name,
+    { err },
+    err?.data,
+    'errorHandler ends',
+    axios.isAxiosError(err),
+  );
   if (err.name === 'DTOValidationError') {
     return response(res, 400, err.message, err);
   }

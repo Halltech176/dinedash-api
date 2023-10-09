@@ -14,6 +14,7 @@ import cors from 'cors';
 import { endpointSpec } from './swagger/definition';
 import * as fs from 'fs';
 import * as path from 'path';
+import mongoose from 'mongoose';
 
 const listEndpoints = require('express-list-endpoints');
 
@@ -100,5 +101,6 @@ app.all('*', (req: Request, res: Response) => {
 });
 
 app.use(errorHandler);
+console.log(mongoose.modelNames());
 
 export default app;

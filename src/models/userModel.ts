@@ -39,7 +39,6 @@ const options = {
 
 export enum UserTypes {
   INDIVIDUAL = 'individual',
-  ARTISAN = 'artisan',
   SUPER = 'super',
   ADMIN = 'admin',
   EMPLOYER = 'employer',
