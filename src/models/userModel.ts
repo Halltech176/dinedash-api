@@ -120,6 +120,9 @@ export class User {
   })
   status!: Status;
 
+  @prop({ default: 0 })
+  points!: number;
+
   @prop({ ref: 'Role', immutable: true })
   roles?: Ref<'Role'>[];
 

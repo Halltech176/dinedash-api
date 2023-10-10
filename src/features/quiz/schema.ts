@@ -20,7 +20,7 @@ export class Quiz {
   @prop({ required: true, ref: () => Question })
   questionId!: Ref<Question>;
 
-  @prop({ required: false })
+  @prop({ required: false, default: false })
   correct?: boolean;
 
   @prop({ required: true })

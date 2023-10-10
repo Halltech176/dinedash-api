@@ -6,8 +6,9 @@ import { Types } from 'mongoose';
 const doc: IDocs = {};
 
 export class CreateQuizDto implements Omit<Quiz, 'createdBy'> {
+  @IsOptional()
   @IsBoolean()
-  correct!: boolean;
+  correct?: boolean;
 
   @IsOptional()
   option!: string | number;

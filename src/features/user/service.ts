@@ -3,6 +3,7 @@ import { find, findOne } from '../../utilities/query';
 import {
   CreateUserDto,
   UpdateUserDto,
+  UpdateUserPointsDto,
   UpdateUserStatusDto,
   updateEmailDto,
 } from './dto';
@@ -129,6 +130,31 @@ export default class UserService {
     };
   }
 
+  static async updatePoints(
+    queries: { [key: string]: any; _id: string },
+    data: UpdateUserPointsDto,
+    options: QueryOptions<User> = { new: true, runValidators: true },
+  ): Promise<serviceResponseType<User | null>> {
+    console.log('queries', queries);
+    const foundUser = await findOne(UserModel, queries);
+    if (!foundUser) {
+      throw new Error('User not found or access denied');
+    }
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      foundUser._id,
+      {
+        points: foundUser.points + data.points,
+      },
+      options,
+    );
+
+    return {
+      success: true,
+      message: 'User status updated successfully',
+      data: updatedUser,
+    };
+  }
+
   static async updateProfile(
     queries: { [key: string]: any; _id: string },
     data: UpdateUserDto,
@@ -182,6 +208,7 @@ export default class UserService {
         throw new Error('User not found or access denied');
       }
       const otherData: Partial<User> = {};
+
       if (data.email) {
         otherData.emailVerified = false;
       }
@@ -200,5 +227,4 @@ export default class UserService {
       return serviceError(error);
     }
   }
-
 }

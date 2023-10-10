@@ -3,13 +3,13 @@ import { GuardFunction } from '../../guards';
 
 export const canCreateQuiz: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     // throw new Error('Not implemented');
     return {
       auth: true,
       message: 'Can create Quiz',
       query: {
-        createdBy: req.user._id
+        createdBy: req.user._id,
       },
     };
   } catch (error) {
@@ -23,7 +23,7 @@ export const canCreateQuiz: GuardFunction = async (req, exec) => {
 
 export const canFetchQuiz: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     return {
       auth: true,
       message: 'Can fetch Quiz',

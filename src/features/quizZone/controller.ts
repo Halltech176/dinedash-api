@@ -19,7 +19,6 @@ const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
   const perm = throwPermIfError(await canCreateQuizZone(req, true));
-  console.log({ perm });
 
   // const category =
 

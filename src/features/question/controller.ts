@@ -23,7 +23,6 @@ router.post('/', async (req: Request, res: Response) => {
     }),
   );
 
-  console.log({ content, body: req.body });
   return response(res, content.statusCode, content.message, content.data);
 });
 

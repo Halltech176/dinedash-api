@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -31,6 +32,7 @@ export class UpdateUserDto
       | 'lastLogin'
       | 'type'
       | 'phoneVerified'
+      | 'points'
     >
 {
   @IsOptional()
@@ -59,6 +61,12 @@ export class UpdateUserStatusDto {
   @IsOptional()
   @IsString()
   description?: string;
+}
+
+export class UpdateUserPointsDto {
+  @IsNotEmpty()
+  @IsNumber()
+  points: number;
 }
 
 doc['/update-status'] = {
