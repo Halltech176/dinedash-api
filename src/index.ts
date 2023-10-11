@@ -101,6 +101,5 @@ app.all('*', (req: Request, res: Response) => {
 });
 
 app.use(errorHandler);
-console.log(mongoose.modelNames());
 
 export default app;

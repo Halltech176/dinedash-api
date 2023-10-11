@@ -1,10 +1,48 @@
-import { QueryOptions, UpdateQuery } from 'mongoose';
+import { QueryOptions, Types, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
 import { CreateQuizDto, UpdateQuizDto } from './dto';
 import { Quiz } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { QuizModel } from '../../models';
+import { QuestionModel } from '../../models';
+import { da } from '@faker-js/faker';
+
+const fetchQuestionByIds = async (payload: CreateQuizDto) => {
+  try {
+    const questionIds = payload.questions.map(
+      (question) => question.questionID,
+    );
+
+    const answeredQuestions = await QuestionModel.find({
+      _id: { $in: questionIds },
+    });
+
+    const validationResults = answeredQuestions.map((question) => {
+      const correct =
+        question.correctOptionIndex ==
+        payload.questions.find(
+          (q) =>
+            q.questionID.toString().trim() == question._id.toString().trim(),
+        )?.option;
+
+      const points = correct ? question.points : 0;
+
+      return {
+        option: payload.questions.find(
+          (data) => data.questionID == question._id,
+        )?.option,
+        questionID: question._id,
+        correct,
+        points,
+      };
+    });
+
+    return validationResults;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 export default class QuizService {
   static async fetch(
@@ -37,13 +75,18 @@ export default class QuizService {
     payload: CreateQuizDto,
     data: Partial<Quiz> = {},
   ): Promise<serviceResponseType<Quiz>> {
-    // return await QuizModel.create(data);
     validateDTO(CreateQuizDto, payload);
     try {
-      const createdQuiz = await QuizModel.create({ ...payload, ...data });
+      const validationResults = await await fetchQuestionByIds(payload);
+
+      const createdQuiz = await QuizModel.create({
+        ...payload,
+        questions: validationResults,
+        ...data,
+      });
       return {
         success: true,
-        message: 'Quiz created successfully',
+        message: 'Quiz submitted successfully',
         data: createdQuiz,
         statusCode: 201,
       };
@@ -89,13 +132,6 @@ export default class QuizService {
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<Quiz | null>> {
     try {
-      // const foundQuiz = await findOne(QuizModel, queries);
-      // if (!foundQuiz) {
-      //   throw {
-      //     message: 'Quiz not found or access denied',
-      //     statusCode: 404,
-      //   };
-      // }
       const updatedQuiz = await QuizModel.findOneAndUpdate(
         queries,
         { ...data, ...others },

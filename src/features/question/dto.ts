@@ -13,7 +13,7 @@ import {
   ValidationArguments,
   isNotEmpty,
 } from 'class-validator';
-import { Question, QuestionType } from './schema';
+import { Question, QuestionDifficulty, QuestionType } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Type } from 'class-transformer';
 import { Category } from '../category/schema';
@@ -33,6 +33,10 @@ export class CreateQuestionDto implements Omit<Question, 'createdBy'> {
   @IsNumber()
   points?: number;
 
+  @IsOptional()
+  @IsNumber()
+  level?: number;
+
   @IsString()
   answerDescription: string;
 
@@ -45,6 +49,9 @@ export class CreateQuestionDto implements Omit<Question, 'createdBy'> {
   @IsOptional()
   @IsMongoId()
   category: Ref<Category>;
+
+  @IsOptional()
+  difficulty: QuestionDifficulty;
 
   @IsOptional()
   @IsMongoId()

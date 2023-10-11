@@ -63,12 +63,6 @@ export class UpdateUserStatusDto {
   description?: string;
 }
 
-export class UpdateUserPointsDto {
-  @IsNotEmpty()
-  @IsNumber()
-  points: number;
-}
-
 doc['/update-status'] = {
   PUT: {
     schema: UpdateUserStatusDto.name,

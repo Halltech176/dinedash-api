@@ -1,6 +1,7 @@
 import { DocumentType, getModelForClass } from '@typegoose/typegoose';
 import { Profile } from './profileModel';
 import { File } from '../features/file/schema';
+import { Language } from '../features/language/schema';
 import { Quiz } from '../features/quiz/schema';
 import { Question } from '../features/question/schema';
 import { Category } from '../features/category/schema';
@@ -14,6 +15,7 @@ export type UserModelType = typeof UserMod &
   PassportLocalModel<DocumentType<User>>;
 export const UserModel = UserMod as UserModelType;
 export const ProfileModel = getModelForClass(Profile);
+export const LanguageModel = getModelForClass(Language);
 export const QuizModel = getModelForClass(Quiz);
 export const QuestionModel = getModelForClass(Question);
 export const CategoryModel = getModelForClass(Category);

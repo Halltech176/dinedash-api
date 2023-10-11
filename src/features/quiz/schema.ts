@@ -3,6 +3,22 @@ import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { Types } from 'mongoose';
 import { Question } from '../question/schema';
+import { Type } from 'class-transformer';
+import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+
+export class AnsweredQuestion {
+  @prop({ required: true, ref: () => Question })
+  questionID!: Types.ObjectId;
+
+  @prop({ required: true })
+  option!: number;
+
+  @prop({ required: false })
+  correct: boolean;
+
+  @prop({ required: false })
+  points: number;
+}
 
 @plugin(mongooseIdValidator)
 @pre<Quiz>('save', function (next) {
@@ -17,15 +33,6 @@ export class Quiz {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
-  @prop({ required: true, ref: () => Question })
-  questionId!: Ref<Question>;
-
-  @prop({ required: false, default: false })
-  correct?: boolean;
-
-  @prop({ required: true })
-  option!: string | number;
-
-  // @prop({ required: true, immutable: true, unique: true })
-  // public record!: string;
+  @prop({ type: () => [AnsweredQuestion], required: true })
+  questions!: AnsweredQuestion[];
 }
