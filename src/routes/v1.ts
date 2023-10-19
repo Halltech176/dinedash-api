@@ -2,6 +2,12 @@ import { Router, Request, Response } from 'express';
 import generator from './generator';
 
 import auth from '../features/auth/controller';
+import contestQuestions from '../features/contestQuestions/controller';
+
+import contestSubmissions from '../features/contestSubmissions/controller';
+
+import contest from '../features/contest/controller';
+
 import quizSettings from '../features/quizSettings/controller';
 
 import funAndLearnSubmission from '../features/funAndLearnSubmission/controller';
@@ -37,6 +43,9 @@ router.use('/funAndLearn', funAndLearn);
 router.use('/QuizZoneSubmission', QuizZoneSubmission);
 router.use('/funAndLearnSubmission', funAndLearnSubmission);
 router.use('/quizSettings', quizSettings);
+router.use('/contest', contest);
+router.use('/contestSubmissions', contestSubmissions);
+router.use('/contestQuestions', contestQuestions);
 router.use('/', generator);
 
 export default router;

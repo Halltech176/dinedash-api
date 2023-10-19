@@ -1,6 +1,9 @@
 import { DocumentType, getModelForClass } from '@typegoose/typegoose';
 import { Profile } from './profileModel';
 import { File } from '../features/file/schema';
+import { ContestQuestions } from '../features/contestQuestions/schema';
+import { ContestSubmissions } from '../features/contestSubmissions/schema';
+import { Contest } from '../features/contest/schema';
 import { QuizSettings } from '../features/quizSettings/schema';
 import { FunAndLearnSubmission } from '../features/funAndLearnSubmission/schema';
 import { QuizZoneSubmission } from '../features/QuizZoneSubmission/schema';
@@ -18,6 +21,9 @@ export type UserModelType = typeof UserMod &
   PassportLocalModel<DocumentType<User>>;
 export const UserModel = UserMod as UserModelType;
 export const ProfileModel = getModelForClass(Profile);
+export const ContestQuestionsModel = getModelForClass(ContestQuestions);
+export const ContestSubmissionsModel = getModelForClass(ContestSubmissions);
+export const ContestModel = getModelForClass(Contest);
 export const QuizSettingsModel = getModelForClass(QuizSettings);
 export const FunAndLearnSubmissionModel = getModelForClass(
   FunAndLearnSubmission,
