@@ -7,6 +7,7 @@ import { validateDTO } from '../../middlewares/validate';
 import { QuizZoneModel, CategoryModel } from '../../models';
 import { CreateCategoryDto } from '../category/dto';
 import QuizSettingsService from '../quizSettings/service';
+import LanguageService from '../language/service';
 
 export default class QuizZoneService {
   static async fetch(
@@ -52,6 +53,14 @@ export default class QuizZoneService {
     validateDTO(CreateQuizZoneDto, payload);
 
     try {
+      const language = await LanguageService.fetchOne({
+        name: payload.language,
+      });
+
+      if (language.data === null) {
+        throw new Error('Please provide a valid language');
+      }
+
       const createdQuizZone = await QuizZoneModel.create({
         ...payload,
         ...data,

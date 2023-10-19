@@ -15,9 +15,8 @@ export default class QuizSettingsService {
       let foundQuizSettingss;
       if (conditions) {
         foundQuizSettingss = await find(QuizSettingsModel, queries, conditions);
-      }
-      else {
-      foundQuizSettingss = await find(QuizSettingsModel, queries);
+      } else {
+        foundQuizSettingss = await find(QuizSettingsModel, queries);
       }
       return {
         success: true,
@@ -41,7 +40,10 @@ export default class QuizSettingsService {
     // return await QuizSettingsModel.create(data);
     validateDTO(CreateQuizSettingsDto, payload);
     try {
-      const createdQuizSettings = await QuizSettingsModel.create({ ...payload, ...data });
+      const createdQuizSettings = await QuizSettingsModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
         message: 'Quiz Settings created successfully',
@@ -64,10 +66,13 @@ export default class QuizSettingsService {
     try {
       let foundQuizSettings;
       if (conditions) {
-        foundQuizSettings = await findOne(QuizSettingsModel, queries, conditions);
-      }
-      else {
-      foundQuizSettings = await findOne(QuizSettingsModel, queries);
+        foundQuizSettings = await findOne(
+          QuizSettingsModel,
+          queries,
+          conditions,
+        );
+      } else {
+        foundQuizSettings = await findOne(QuizSettingsModel, queries);
       }
       return {
         success: true,
@@ -86,7 +91,7 @@ export default class QuizSettingsService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateQuizSettingsDto>,
+    data: Partial<UpdateQuizSettingsDto>,
     others: UpdateQuery<QuizSettings> & Partial<QuizSettings> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<QuizSettings | null>> {
