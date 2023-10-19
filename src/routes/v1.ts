@@ -10,8 +10,6 @@ import funAndLearn from '../features/funAndLearn/controller';
 
 import language from '../features/language/controller';
 
-import quiz from '../features/quiz/controller';
-
 import question from '../features/question/controller';
 
 import category from '../features/category/controller';
@@ -32,7 +30,6 @@ router.use('/file', file);
 router.use('/quizZone', quizZone);
 router.use('/category', category);
 router.use('/question', question);
-router.use('/quiz', quiz);
 router.use('/language', language);
 router.use('/funAndLearn', funAndLearn);
 router.use('/QuizZoneSubmission', QuizZoneSubmission);

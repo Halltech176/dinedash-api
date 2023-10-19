@@ -1,10 +1,4 @@
-import {
-  prop,
-  plugin,
-  pre,
-  modelOptions,
-  Ref,
-} from '@typegoose/typegoose';
+import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 
@@ -21,9 +15,8 @@ export class Language {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
+  name!: string;
 
   // @prop({ required: true, immutable: true, unique: true })
   // public record!: string;
 }
-
-

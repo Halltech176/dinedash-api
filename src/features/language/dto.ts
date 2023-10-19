@@ -1,10 +1,17 @@
-import { IsOptional } from 'class-validator';
+import { IsIn, IsOptional, IsString } from 'class-validator';
 import { Language } from './schema';
 import { IDocs } from '../../utilities/templates/types';
+import { LanguageName } from '../category/dto';
 
 const doc: IDocs = {};
 
-export class CreateLanguageDto implements Omit<Language, 'createdBy'> {}
+export class CreateLanguageDto implements Omit<Language, 'createdBy'> {
+  @IsString()
+  @IsIn(LanguageName, {
+    message: 'Please provide a valid language name',
+  })
+  name: string;
+}
 
 doc['/'] = {
   POST: {
@@ -12,7 +19,7 @@ doc['/'] = {
   },
 };
 
-export class UpdateLanguageDto implements Omit<CreateLanguageDto, ''> {}
+export class UpdateLanguageDto extends CreateLanguageDto {}
 
 doc['/'] = {
   PUT: {

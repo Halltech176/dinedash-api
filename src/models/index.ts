@@ -5,7 +5,6 @@ import { FunAndLearnSubmission } from '../features/funAndLearnSubmission/schema'
 import { QuizZoneSubmission } from '../features/QuizZoneSubmission/schema';
 import { FunAndLearn } from '../features/funAndLearn/schema';
 import { Language } from '../features/language/schema';
-import { Quiz } from '../features/quiz/schema';
 import { Question } from '../features/question/schema';
 import { Category } from '../features/category/schema';
 import { QuizZone } from '../features/quizZone/schema';
@@ -18,11 +17,12 @@ export type UserModelType = typeof UserMod &
   PassportLocalModel<DocumentType<User>>;
 export const UserModel = UserMod as UserModelType;
 export const ProfileModel = getModelForClass(Profile);
-export const FunAndLearnSubmissionModel = getModelForClass(FunAndLearnSubmission);
+export const FunAndLearnSubmissionModel = getModelForClass(
+  FunAndLearnSubmission,
+);
 export const QuizZoneSubmissionModel = getModelForClass(QuizZoneSubmission);
 export const FunAndLearnModel = getModelForClass(FunAndLearn);
 export const LanguageModel = getModelForClass(Language);
-export const QuizModel = getModelForClass(Quiz);
 export const QuestionModel = getModelForClass(Question);
 export const CategoryModel = getModelForClass(Category);
 export const QuizZoneModel = getModelForClass(QuizZone);
