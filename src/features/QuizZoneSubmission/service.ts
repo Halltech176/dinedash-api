@@ -9,7 +9,8 @@ import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { QuizZoneModel, QuizZoneSubmissionModel } from '../../models';
 import { Model } from 'mongoose';
-import { fetchQuestionByIds } from '../../utilities/submit';
+import { fetchQuestionByIds } from '../question/service';
+import { savePoints } from '../../utilities/submit';
 
 export default class QuizZoneSubmissionService {
   static async fetch(
@@ -59,6 +60,13 @@ export default class QuizZoneSubmissionService {
         questions: validationResults,
         ...data,
       });
+
+      const points = createdQuizZoneSubmission.questions.reduce((acc, curr) => {
+        return acc + curr.points;
+      }, 0);
+
+      await savePoints(data.createdBy, points);
+
       return {
         success: true,
         message: ' Quiz Zone Submission created successfully',

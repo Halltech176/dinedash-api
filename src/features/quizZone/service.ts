@@ -6,16 +6,25 @@ import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { QuizZoneModel, CategoryModel } from '../../models';
 import { CreateCategoryDto } from '../category/dto';
+import QuizSettingsService from '../quizSettings/service';
 
 export default class QuizZoneService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
+    const _limit = await (
+      await QuizSettingsService.fetch({ name: 'quizZone' })
+    ).data.docs[0].questionPerQuiz;
+
     try {
       let foundQuizZones;
       if (conditions) {
-        foundQuizZones = await find(QuizZoneModel, queries, conditions);
+        foundQuizZones = await find(
+          QuizZoneModel,
+          { ...queries, _limit },
+          conditions,
+        );
       } else {
         foundQuizZones = await find(QuizZoneModel, queries);
       }

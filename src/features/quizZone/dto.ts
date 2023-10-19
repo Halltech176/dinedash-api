@@ -23,20 +23,6 @@ import { LanguageName } from '../category/dto';
 
 const doc: IDocs = {};
 
-// class TQuizOptions implements QuizOptions {
-//   @IsString()
-//   value: string;
-//   @IsBoolean()
-//   isCorrect: boolean;
-
-//   @IsNumber({
-//     allowNaN: false,
-//     allowInfinity: false,
-//     maxDecimalPlaces: 0,
-//   })
-//   correlationLevel: number;
-// }
-
 export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
   @IsString()
   question: string;

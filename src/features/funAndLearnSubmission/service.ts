@@ -8,7 +8,8 @@ import { FunAndLearnSubmission } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { FunAndLearnSubmissionModel, QuestionModel } from '../../models';
-import { fetchQuestionByIds } from '../../utilities/submit';
+import { fetchQuestionByIds } from '../question/service';
+import { savePoints } from '../../utilities/submit';
 
 export default class FunAndLearnSubmissionService {
   static async fetch(
@@ -49,9 +50,10 @@ export default class FunAndLearnSubmissionService {
     data: Partial<FunAndLearnSubmission> = {},
   ): Promise<serviceResponseType<FunAndLearnSubmission>> {
     // return await FunAndLearnSubmissionModel.create(data);
+
     validateDTO(CreateFunAndLearnSubmissionDto, payload);
     try {
-      const validationResults = await await fetchQuestionByIds(
+      const validationResults = await fetchQuestionByIds(
         QuestionModel,
         payload,
       );
@@ -61,6 +63,16 @@ export default class FunAndLearnSubmissionService {
           questions: validationResults,
           ...data,
         });
+
+      const points = createdFunAndLearnSubmission.questions.reduce(
+        (acc, curr) => {
+          return acc + curr.points;
+        },
+        0,
+      );
+
+      await savePoints(data.createdBy, points);
+
       return {
         success: true,
         message: 'Fun And Learn Submission created successfully',

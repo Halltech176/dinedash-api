@@ -5,6 +5,51 @@ import { Question } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { QuestionModel } from '../../models';
+import { Model } from 'mongoose';
+import QuizSettingsService from '../quizSettings/service';
+
+interface Payload {
+  questions: any[];
+}
+
+export const fetchQuestionByIds = async <T>(
+  model: Model<T>,
+  payload: Payload,
+) => {
+  try {
+    const questionIds = payload.questions.map(
+      (question) => question.questionID,
+    );
+
+    const answeredQuestions: any = await model.find({
+      _id: { $in: questionIds },
+    });
+
+    const validationResults = answeredQuestions.map((question: any) => {
+      const correct =
+        question.correctOptionIndex ==
+        payload.questions.find(
+          (q) =>
+            q.questionID.toString().trim() == question._id.toString().trim(),
+        )?.option;
+
+      const points = correct ? question.points : 0;
+
+      return {
+        option: payload.questions.find(
+          (data) => data.questionID == question._id,
+        )?.option,
+        questionID: question._id,
+        correct,
+        points,
+      };
+    });
+
+    return validationResults;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 export default class QuestionService {
   static async fetch(
@@ -12,12 +57,20 @@ export default class QuestionService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
+      const _limit = await (
+        await QuizSettingsService.fetch({ name: 'funAndLearn' })
+      ).data.docs[0].questionPerQuiz;
+
       let foundQuestions;
+
       if (conditions) {
-        foundQuestions = await find(QuestionModel, queries, conditions);
-      }
-      else {
-      foundQuestions = await find(QuestionModel, queries);
+        foundQuestions = await find(
+          QuestionModel,
+          { ...queries, _limit },
+          conditions,
+        );
+      } else {
+        foundQuestions = await find(QuestionModel, queries);
       }
       return {
         success: true,
@@ -41,7 +94,10 @@ export default class QuestionService {
     // return await QuestionModel.create(data);
     validateDTO(CreateQuestionDto, payload);
     try {
-      const createdQuestion = await QuestionModel.create({ ...payload, ...data });
+      const createdQuestion = await QuestionModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
         message: 'Question created successfully',
@@ -65,9 +121,8 @@ export default class QuestionService {
       let foundQuestion;
       if (conditions) {
         foundQuestion = await findOne(QuestionModel, queries, conditions);
-      }
-      else {
-      foundQuestion = await findOne(QuestionModel, queries);
+      } else {
+        foundQuestion = await findOne(QuestionModel, queries);
       }
       return {
         success: true,
@@ -86,7 +141,7 @@ export default class QuestionService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateQuestionDto>,
+    data: Partial<UpdateQuestionDto>,
     others: UpdateQuery<Question> & Partial<Question> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<Question | null>> {

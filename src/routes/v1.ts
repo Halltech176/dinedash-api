@@ -2,6 +2,8 @@ import { Router, Request, Response } from 'express';
 import generator from './generator';
 
 import auth from '../features/auth/controller';
+import quizSettings from '../features/quizSettings/controller';
+
 import funAndLearnSubmission from '../features/funAndLearnSubmission/controller';
 
 import QuizZoneSubmission from '../features/QuizZoneSubmission/controller';
@@ -34,6 +36,7 @@ router.use('/language', language);
 router.use('/funAndLearn', funAndLearn);
 router.use('/QuizZoneSubmission', QuizZoneSubmission);
 router.use('/funAndLearnSubmission', funAndLearnSubmission);
+router.use('/quizSettings', quizSettings);
 router.use('/', generator);
 
 export default router;

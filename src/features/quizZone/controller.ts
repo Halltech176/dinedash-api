@@ -20,17 +20,11 @@ const router = express.Router();
 router.post('/', async (req: Request, res: Response) => {
   const perm = throwPermIfError(await canCreateQuizZone(req, true));
 
-  // const category =
-
   const content = throwIfError(
     await QuizZoneService.create(req.body, {
       ...perm.query,
     }),
   );
-
-  console.log({ content, body: req.body });
-
-  const { category, description, image, subCategory } = req.body;
 
   return response(res, content.statusCode, content.message, content.data);
 });

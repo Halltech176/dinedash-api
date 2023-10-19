@@ -14,7 +14,6 @@ import cors from 'cors';
 import { endpointSpec } from './swagger/definition';
 import * as fs from 'fs';
 import * as path from 'path';
-import mongoose from 'mongoose';
 
 const listEndpoints = require('express-list-endpoints');
 

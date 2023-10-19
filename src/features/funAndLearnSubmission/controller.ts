@@ -12,7 +12,6 @@ import response, {
 } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { UpdateFunAndLearnSubmissionDto } from './dto';
-import { savePoints } from '../../utilities/submit';
 
 const router = express.Router();
 
@@ -25,13 +24,6 @@ router.post('/', async (req: Request, res: Response) => {
       ...perm.query,
     }),
   );
-
-  const points = content.data.questions.reduce((acc, curr) => {
-    return acc + curr.points;
-  }, 0);
-
-  await savePoints(req.user._id, points);
-  return response(res, content.statusCode, content.message, content.data);
 
   return response(res, content.statusCode, content.message, content.data);
 });
