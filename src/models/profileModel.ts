@@ -104,4 +104,7 @@ export class Profile {
 
   @prop()
   accountName?: string;
+
+  @prop({ default: 0 })
+  points?: number;
 }

@@ -67,8 +67,7 @@ export const canFetchProfiles = async (req: Request): Promise<PermType> => {
     return {
       auth: true,
       message: 'Can fetch User',
-      query: {
-      },
+      query: {},
     };
   } catch (error) {
     return {

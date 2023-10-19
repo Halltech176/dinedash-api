@@ -7,7 +7,6 @@ import {
   validateSync,
 } from 'class-validator';
 
-
 export const validateEV = (
   req: Request,
   res: Response<any, Record<string, any>>,
@@ -27,7 +26,6 @@ export const validateEV = (
 };
 type data = Record<string, any>;
 
-
 export const validateDTO = <D extends data, C extends { new (): any }>(
   classTemplate: C,
   data: InstanceType<C> | any,
@@ -40,7 +38,7 @@ export const validateDTO = <D extends data, C extends { new (): any }>(
     //   target: false,
     //   value: false,
     // },
-    // skipMissingProperties: false,
+    skipMissingProperties: false,
     whitelist: true,
   },
 ): InstanceType<C> => {
@@ -81,6 +79,7 @@ export const validateDTO = <D extends data, C extends { new (): any }>(
       errors,
     };
     const constraints = error.constraints;
+
     if (constraints) {
       const message = Object.keys(constraints)
         .map((key) => constraints[key])

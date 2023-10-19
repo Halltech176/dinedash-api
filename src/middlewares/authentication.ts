@@ -33,6 +33,7 @@ const whitelistUrls = [
 ];
 
 const blacklistUrls = ['/job'];
+
 export const authenticator: any = async (
   req: Request,
   secrets = [],
@@ -66,7 +67,6 @@ export const authenticator: any = async (
             throw new Error('Profile not found');
           }
           user.profile.firstName;
-
 
           user.lastActive = new Date();
           user.save();
@@ -286,6 +286,7 @@ export const usePermission = (permission: () => Promise<AuthQuery>) => {
     }
   };
 };
+
 export default {
   authenticateUser,
   authenticateAdmin,
