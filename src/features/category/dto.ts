@@ -6,6 +6,7 @@ import { Types } from 'mongoose';
 import { Ref } from '@typegoose/typegoose';
 
 import LanguageData from '../../data/language.json';
+import { CategoryType } from './schema';
 
 export const LanguageName: string[] = LanguageData.map((item) => item.name);
 
@@ -16,6 +17,9 @@ const doc: IDocs = {};
 export class CreateCategoryDto implements Omit<Category, 'createdBy'> {
   @IsString()
   name!: string;
+
+  @IsString()
+  type!: CategoryType;
 
   @IsOptional()
   @IsMongoId()

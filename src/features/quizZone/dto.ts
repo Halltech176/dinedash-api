@@ -60,6 +60,10 @@ export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
   subCategory: Ref<Category>;
 
   @IsOptional()
+  @IsNumber()
+  level?: number | undefined;
+
+  @IsOptional()
   @IsIn(LanguageName, {
     message: 'Please provide a valid language name',
   })

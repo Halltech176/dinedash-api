@@ -6,7 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { AnsweredQuestion, Quiz } from './schema';
+import { AnsweredQuestion, QuestionType, Quiz } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Types } from 'mongoose';
 import { Type } from 'class-transformer';
@@ -18,6 +18,9 @@ export class CreateQuizDto
 {
   @IsArray()
   questions!: AnsweredQuestion[];
+
+  @IsString()
+  type: QuestionType;
 }
 
 doc['/'] = {

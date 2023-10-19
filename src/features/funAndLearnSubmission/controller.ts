@@ -1,31 +1,27 @@
 import express, { Request, Response } from 'express';
 import {
-  canCreateQuiz,
-  canDeleteQuiz,
-  canFetchQuiz,
-  canUpdateQuiz,
+  canCreateFunAndLearnSubmission,
+  canDeleteFunAndLearnSubmission,
+  canFetchFunAndLearnSubmission,
+  canUpdateFunAndLearnSubmission,
 } from './guard';
-import QuizService from './service';
+import FunAndLearnSubmissionService from './service';
 import response, {
   throwIfError,
   throwPermIfError,
 } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { UpdateQuizDto } from './dto';
-import { canFetchQuestion } from '../question/guard';
-import QuestionService from '../question/service';
-import UserService from '../user/service';
-import { ProfileModel } from '../../models';
-import { Types } from 'mongoose';
+import { UpdateFunAndLearnSubmissionDto } from './dto';
 import { savePoints } from '../../utilities/submit';
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canCreateQuiz(req, true));
-
+  const perm = throwPermIfError(
+    await canCreateFunAndLearnSubmission(req, true),
+  );
   const content = throwIfError(
-    await QuizService.create(req.body, {
+    await FunAndLearnSubmissionService.create(req.body, {
       ...perm.query,
     }),
   );
@@ -35,25 +31,29 @@ router.post('/', async (req: Request, res: Response) => {
   }, 0);
 
   await savePoints(req.user._id, points);
+  return response(res, content.statusCode, content.message, content.data);
 
   return response(res, content.statusCode, content.message, content.data);
 });
 
 router.get('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchQuiz(req, false));
+  const perm = throwPermIfError(
+    await canFetchFunAndLearnSubmission(req, false),
+  );
   const content = throwIfError(
-    await QuizService.fetch(req.query, {
+    await FunAndLearnSubmissionService.fetch(req.query, {
       ...perm.query,
     }),
   );
-
   return response(res, content.statusCode, content.message, content.data);
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchQuiz(req, false));
+  const perm = throwPermIfError(
+    await canFetchFunAndLearnSubmission(req, false),
+  );
   const content = throwIfError(
-    await QuizService.fetchOne(req.query, {
+    await FunAndLearnSubmissionService.fetchOne(req.query, {
       _id: req.params.id,
       ...perm.query,
     }),
@@ -62,19 +62,26 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 router.put('/:id', async (req: Request, res: Response) => {
-  const body = validateDTO(UpdateQuizDto, req.body);
+  const body = validateDTO(UpdateFunAndLearnSubmissionDto, req.body);
 
-  const perm = throwPermIfError(await canUpdateQuiz(req, false));
+  const perm = throwPermIfError(
+    await canUpdateFunAndLearnSubmission(req, false),
+  );
   const content = throwIfError(
-    await QuizService.updateOne({ _id: req.params.id, ...perm.query }, body),
+    await FunAndLearnSubmissionService.updateOne(
+      { _id: req.params.id, ...perm.query },
+      body,
+    ),
   );
   return response(res, content.statusCode, content.message, content.data);
 });
 
 router.delete('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canDeleteQuiz(req, false));
+  const perm = throwPermIfError(
+    await canDeleteFunAndLearnSubmission(req, false),
+  );
   const content = throwIfError(
-    await QuizService.deleteOne(req.params.id, {
+    await FunAndLearnSubmissionService.deleteOne(req.params.id, {
       ...perm.query,
     }),
   );

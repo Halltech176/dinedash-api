@@ -5,6 +5,13 @@ import { QuizZone } from '../quizZone/schema';
 import { Types } from 'mongoose';
 import { File } from '../file/schema';
 
+export enum CategoryType {
+  QUIZZONE = 'quizZone',
+  FUNANDLEARN = 'funAndLearn',
+  DAILYQUIZ = 'dailyQuiz',
+  GUESSTHEWORD = 'guessTheWord',
+}
+
 @plugin(mongooseIdValidator)
 @pre<Category>('save', function (next) {
   this.name = this.name.toLowerCase();
@@ -18,6 +25,9 @@ import { File } from '../file/schema';
 export class Category {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
+
+  @prop({ required: true, enum: CategoryType })
+  type!: CategoryType;
 
   @prop({ required: true, unique: true })
   name!: string;

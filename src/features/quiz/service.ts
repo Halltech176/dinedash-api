@@ -6,43 +6,7 @@ import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { QuizModel } from '../../models';
 import { QuestionModel } from '../../models';
-import { da } from '@faker-js/faker';
-
-const fetchQuestionByIds = async (payload: CreateQuizDto) => {
-  try {
-    const questionIds = payload.questions.map(
-      (question) => question.questionID,
-    );
-
-    const answeredQuestions = await QuestionModel.find({
-      _id: { $in: questionIds },
-    });
-
-    const validationResults = answeredQuestions.map((question) => {
-      const correct =
-        question.correctOptionIndex ==
-        payload.questions.find(
-          (q) =>
-            q.questionID.toString().trim() == question._id.toString().trim(),
-        )?.option;
-
-      const points = correct ? question.points : 0;
-
-      return {
-        option: payload.questions.find(
-          (data) => data.questionID == question._id,
-        )?.option,
-        questionID: question._id,
-        correct,
-        points,
-      };
-    });
-
-    return validationResults;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+import { fetchQuestionByIds } from '../../utilities/submit';
 
 export default class QuizService {
   static async fetch(
@@ -77,7 +41,11 @@ export default class QuizService {
   ): Promise<serviceResponseType<Quiz>> {
     validateDTO(CreateQuizDto, payload);
     try {
-      const validationResults = await await fetchQuestionByIds(payload);
+      const validationResults = await fetchQuestionByIds(
+        QuestionModel,
+        payload,
+      );
+      // const validationResults = await await fetchQuestionByIds(payload);
 
       const createdQuiz = await QuizModel.create({
         ...payload,

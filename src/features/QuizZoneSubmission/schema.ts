@@ -1,23 +1,8 @@
-import {
-  prop,
-  plugin,
-  pre,
-  modelOptions,
-  Ref,
-  DocumentType,
-} from '@typegoose/typegoose';
+import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
-import { Types } from 'mongoose';
-import { Question } from '../question/schema';
-import { Type } from 'class-transformer';
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { QuizZone } from '../quizZone/schema';
-
-export enum QuestionType {
-  QUIZZONE = 'quizZone',
-  FUNANDLEARN = 'funAndLearn',
-}
+import { Types } from 'mongoose';
 
 export class AnsweredQuestion {
   @prop({
@@ -37,7 +22,7 @@ export class AnsweredQuestion {
 }
 
 @plugin(mongooseIdValidator)
-@pre<Quiz>('save', function (next) {
+@pre<QuizZoneSubmission>('save', function (next) {
   // this.record = doc.name + '-' + doc.createdBy;
   next();
 })
@@ -45,13 +30,13 @@ export class AnsweredQuestion {
   schemaOptions: { timestamps: true },
   options: { automaticName: true },
 })
-export class Quiz {
+export class QuizZoneSubmission {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
   @prop({ type: () => [AnsweredQuestion], required: true })
   questions!: AnsweredQuestion[];
 
-  @prop({ required: true, enum: QuestionType })
-  type!: QuestionType;
+  // @prop({ required: true, immutable: true, unique: true })
+  // public record!: string;
 }
