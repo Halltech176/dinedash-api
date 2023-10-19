@@ -15,6 +15,7 @@ export class Language {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
+  @prop({ required: true, unique: true })
   name!: string;
 
   // @prop({ required: true, immutable: true, unique: true })

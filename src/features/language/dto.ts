@@ -10,7 +10,7 @@ export class CreateLanguageDto implements Omit<Language, 'createdBy'> {
   @IsIn(LanguageName, {
     message: 'Please provide a valid language name',
   })
-  name: string;
+  name!: string;
 }
 
 doc['/'] = {

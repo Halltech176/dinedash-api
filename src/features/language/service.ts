@@ -15,9 +15,8 @@ export default class LanguageService {
       let foundLanguages;
       if (conditions) {
         foundLanguages = await find(LanguageModel, queries, conditions);
-      }
-      else {
-      foundLanguages = await find(LanguageModel, queries);
+      } else {
+        foundLanguages = await find(LanguageModel, queries);
       }
       return {
         success: true,
@@ -41,7 +40,10 @@ export default class LanguageService {
     // return await LanguageModel.create(data);
     validateDTO(CreateLanguageDto, payload);
     try {
-      const createdLanguage = await LanguageModel.create({ ...payload, ...data });
+      const createdLanguage = await LanguageModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
         message: 'Language created successfully',
@@ -65,9 +67,8 @@ export default class LanguageService {
       let foundLanguage;
       if (conditions) {
         foundLanguage = await findOne(LanguageModel, queries, conditions);
-      }
-      else {
-      foundLanguage = await findOne(LanguageModel, queries);
+      } else {
+        foundLanguage = await findOne(LanguageModel, queries);
       }
       return {
         success: true,
@@ -86,7 +87,7 @@ export default class LanguageService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateLanguageDto>,
+    data: Partial<UpdateLanguageDto>,
     others: UpdateQuery<Language> & Partial<Language> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<Language | null>> {
