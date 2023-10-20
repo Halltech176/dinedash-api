@@ -8,6 +8,7 @@ import {
 import { ContestQuestions } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Ref } from '@typegoose/typegoose';
+import { Contest } from '../contest/schema';
 
 const doc: IDocs = {};
 
@@ -18,7 +19,7 @@ export class CreateContestQuestionsDto
   question: string;
 
   @IsMongoId()
-  typeId: Ref<ContestQuestions>;
+  typeId: Ref<Contest>;
 
   @IsArray()
   options: Array<number | string>;

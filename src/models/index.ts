@@ -1,6 +1,14 @@
 import { DocumentType, getModelForClass } from '@typegoose/typegoose';
 import { Profile } from './profileModel';
 import { File } from '../features/file/schema';
+import { AudioQuizSubmission } from '../features/audioQuizSubmission/schema';
+import { AudioQuiz } from '../features/audioQuiz/schema';
+import { QuessTheWordSubmission } from '../features/quessTheWordSubmission/schema';
+import { QuessTheWord } from '../features/quessTheWord/schema';
+import { DailyQuizSubmission } from '../features/dailyQuizSubmission/schema';
+import { MathQuizSubmission } from '../features/mathQuizSubmission/schema';
+import { MathQuiz } from '../features/mathQuiz/schema';
+import { DailyQuiz } from '../features/dailyQuiz/schema';
 import { ContestQuestions } from '../features/contestQuestions/schema';
 import { ContestSubmissions } from '../features/contestSubmissions/schema';
 import { Contest } from '../features/contest/schema';
@@ -21,6 +29,16 @@ export type UserModelType = typeof UserMod &
   PassportLocalModel<DocumentType<User>>;
 export const UserModel = UserMod as UserModelType;
 export const ProfileModel = getModelForClass(Profile);
+export const AudioQuizSubmissionModel = getModelForClass(AudioQuizSubmission);
+export const AudioQuizModel = getModelForClass(AudioQuiz);
+export const QuessTheWordSubmissionModel = getModelForClass(
+  QuessTheWordSubmission,
+);
+export const QuessTheWordModel = getModelForClass(QuessTheWord);
+export const DailyQuizSubmissionModel = getModelForClass(DailyQuizSubmission);
+export const MathQuizSubmissionModel = getModelForClass(MathQuizSubmission);
+export const MathQuizModel = getModelForClass(MathQuiz);
+export const DailyQuizModel = getModelForClass(DailyQuiz);
 export const ContestQuestionsModel = getModelForClass(ContestQuestions);
 export const ContestSubmissionsModel = getModelForClass(ContestSubmissions);
 export const ContestModel = getModelForClass(Contest);

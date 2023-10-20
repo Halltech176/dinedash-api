@@ -2,6 +2,22 @@ import { Router, Request, Response } from 'express';
 import generator from './generator';
 
 import auth from '../features/auth/controller';
+import audioQuizSubmission from '../features/audioQuizSubmission/controller';
+
+import audioQuiz from '../features/audioQuiz/controller';
+
+import quessTheWordSubmission from '../features/quessTheWordSubmission/controller';
+
+import quessTheWord from '../features/quessTheWord/controller';
+
+import dailyQuizSubmission from '../features/dailyQuizSubmission/controller';
+
+import mathQuizSubmission from '../features/mathQuizSubmission/controller';
+
+import mathQuiz from '../features/mathQuiz/controller';
+
+import dailyQuiz from '../features/dailyQuiz/controller';
+
 import contestQuestions from '../features/contestQuestions/controller';
 
 import contestSubmissions from '../features/contestSubmissions/controller';
@@ -46,6 +62,14 @@ router.use('/quizSettings', quizSettings);
 router.use('/contest', contest);
 router.use('/contestSubmissions', contestSubmissions);
 router.use('/contestQuestions', contestQuestions);
+router.use('/dailyQuiz', dailyQuiz);
+router.use('/mathQuiz', mathQuiz);
+router.use('/mathQuizSubmission', mathQuizSubmission);
+router.use('/dailyQuizSubmission', dailyQuizSubmission);
+router.use('/quessTheWord', quessTheWord);
+router.use('/quessTheWordSubmission', quessTheWordSubmission);
+router.use('/audioQuiz', audioQuiz);
+router.use('/audioQuizSubmission', audioQuizSubmission);
 router.use('/', generator);
 
 export default router;

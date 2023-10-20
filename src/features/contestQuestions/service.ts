@@ -14,10 +14,13 @@ export default class ContestQuestionsService {
     try {
       let foundContestQuestionss;
       if (conditions) {
-        foundContestQuestionss = await find(ContestQuestionsModel, queries, conditions);
-      }
-      else {
-      foundContestQuestionss = await find(ContestQuestionsModel, queries);
+        foundContestQuestionss = await find(
+          ContestQuestionsModel,
+          queries,
+          conditions,
+        );
+      } else {
+        foundContestQuestionss = await find(ContestQuestionsModel, queries);
       }
       return {
         success: true,
@@ -41,7 +44,10 @@ export default class ContestQuestionsService {
     // return await ContestQuestionsModel.create(data);
     validateDTO(CreateContestQuestionsDto, payload);
     try {
-      const createdContestQuestions = await ContestQuestionsModel.create({ ...payload, ...data });
+      const createdContestQuestions = await ContestQuestionsModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
         message: 'Contest Questions created successfully',
@@ -64,10 +70,13 @@ export default class ContestQuestionsService {
     try {
       let foundContestQuestions;
       if (conditions) {
-        foundContestQuestions = await findOne(ContestQuestionsModel, queries, conditions);
-      }
-      else {
-      foundContestQuestions = await findOne(ContestQuestionsModel, queries);
+        foundContestQuestions = await findOne(
+          ContestQuestionsModel,
+          queries,
+          conditions,
+        );
+      } else {
+        foundContestQuestions = await findOne(ContestQuestionsModel, queries);
       }
       return {
         success: true,
@@ -86,7 +95,7 @@ export default class ContestQuestionsService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateContestQuestionsDto>,
+    data: Partial<UpdateContestQuestionsDto>,
     others: UpdateQuery<ContestQuestions> & Partial<ContestQuestions> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<ContestQuestions | null>> {
@@ -98,11 +107,12 @@ export default class ContestQuestionsService {
       //     statusCode: 404,
       //   };
       // }
-      const updatedContestQuestions = await ContestQuestionsModel.findOneAndUpdate(
-        queries,
-        { ...data, ...others },
-        options,
-      );
+      const updatedContestQuestions =
+        await ContestQuestionsModel.findOneAndUpdate(
+          queries,
+          { ...data, ...others },
+          options,
+        );
       if (!updatedContestQuestions) {
         throw {
           message: 'Contest Questions not found or access denied',
@@ -138,10 +148,11 @@ export default class ContestQuestionsService {
       //     statusCode: 404,
       //   };
       // }
-      const deletedContestQuestions = await ContestQuestionsModel.findOneAndDelete({
-        ...queries,
-        _id: id,
-      });
+      const deletedContestQuestions =
+        await ContestQuestionsModel.findOneAndDelete({
+          ...queries,
+          _id: id,
+        });
       if (!deletedContestQuestions) {
         throw {
           message: 'Contest Questions not found or access denied',

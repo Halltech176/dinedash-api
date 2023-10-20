@@ -1,13 +1,16 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateContestQuestions: GuardFunction = async (req, exec) => {
+export const canCreateDailyQuizSubmission: GuardFunction = async (
+  req,
+  exec,
+) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     // throw new Error('Not implemented');
     return {
       auth: true,
-      message: 'Can create ContestQuestions',
+      message: 'Can create DailyQuizSubmission',
       query: {
         createdBy: req.user._id,
       },
@@ -21,13 +24,12 @@ export const canCreateContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canFetchContestQuestions: GuardFunction = async (req, exec) => {
+export const canFetchDailyQuizSubmission: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super', 'individual']);
-
     return {
       auth: true,
-      message: 'Can fetch ContestQuestions',
+      message: 'Can fetch DailyQuizSubmission',
       query: {},
     };
   } catch (error) {
@@ -39,12 +41,15 @@ export const canFetchContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canUpdateContestQuestions: GuardFunction = async (req, exec) => {
+export const canUpdateDailyQuizSubmission: GuardFunction = async (
+  req,
+  exec,
+) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can update ContestQuestions',
+      message: 'Can update DailyQuizSubmission',
       query: {},
     };
   } catch (error) {
@@ -56,12 +61,15 @@ export const canUpdateContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canDeleteContestQuestions: GuardFunction = async (req, exec) => {
+export const canDeleteDailyQuizSubmission: GuardFunction = async (
+  req,
+  exec,
+) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can delete ContestQuestions',
+      message: 'Can delete DailyQuizSubmission',
       query: {},
     };
   } catch (error) {

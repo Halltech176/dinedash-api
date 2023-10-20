@@ -1,27 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateContestDto, UpdateContestDto } from './dto';
-import { Contest } from './schema';
+import { CreateAudioQuizDto, UpdateAudioQuizDto } from './dto';
+import { AudioQuiz } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { ContestModel } from '../../models';
+import { AudioQuizModel } from '../../models';
+import LanguageService from '../language/service';
 
-export default class ContestService {
+export default class AudioQuizService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundContests;
+      let foundAudioQuizs;
       if (conditions) {
-        foundContests = await find(ContestModel, queries, conditions);
+        foundAudioQuizs = await find(AudioQuizModel, queries, conditions);
       } else {
-        foundContests = await find(ContestModel, queries);
+        foundAudioQuizs = await find(AudioQuizModel, queries);
       }
       return {
         success: true,
-        message: 'Contests fetched successfully',
-        data: foundContests,
+        message: 'Audio Quizs fetched successfully',
+        data: foundAudioQuizs,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -34,17 +35,27 @@ export default class ContestService {
   }
 
   static async create(
-    payload: CreateContestDto,
-    data: Partial<Contest> = {},
-  ): Promise<serviceResponseType<Contest>> {
-    // return await ContestModel.create(data);
-    validateDTO(CreateContestDto, payload);
+    payload: CreateAudioQuizDto,
+    data: Partial<AudioQuiz> = {},
+  ): Promise<serviceResponseType<AudioQuiz>> {
+    // return await AudioQuizModel.create(data);
+    validateDTO(CreateAudioQuizDto, payload);
     try {
-      const createdContest = await ContestModel.create({ ...payload, ...data });
+      const language = await LanguageService.fetchOne({
+        name: payload.language,
+      });
+
+      if (language.data === null) {
+        throw new Error('Please provide a valid language');
+      }
+      const createdAudioQuiz = await AudioQuizModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
-        message: 'Contest created successfully',
-        data: createdContest,
+        message: 'Audio Quiz created successfully',
+        data: createdAudioQuiz,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -61,16 +72,16 @@ export default class ContestService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundContest;
+      let foundAudioQuiz;
       if (conditions) {
-        foundContest = await findOne(ContestModel, queries, conditions);
+        foundAudioQuiz = await findOne(AudioQuizModel, queries, conditions);
       } else {
-        foundContest = await findOne(ContestModel, queries);
+        foundAudioQuiz = await findOne(AudioQuizModel, queries);
       }
       return {
         success: true,
-        message: 'Contest fetched successfully',
-        data: foundContest,
+        message: 'Audio Quiz fetched successfully',
+        data: foundAudioQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -84,33 +95,33 @@ export default class ContestService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial<UpdateContestDto>,
-    others: UpdateQuery<Contest> & Partial<Contest> = {},
+    data: Partial<UpdateAudioQuizDto>,
+    others: UpdateQuery<AudioQuiz> & Partial<AudioQuiz> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Contest | null>> {
+  ): Promise<serviceResponseType<AudioQuiz | null>> {
     try {
-      // const foundContest = await findOne(ContestModel, queries);
-      // if (!foundContest) {
+      // const foundAudioQuiz = await findOne(AudioQuizModel, queries);
+      // if (!foundAudioQuiz) {
       //   throw {
-      //     message: 'Contest not found or access denied',
+      //     message: 'Audio Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedContest = await ContestModel.findOneAndUpdate(
+      const updatedAudioQuiz = await AudioQuizModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedContest) {
+      if (!updatedAudioQuiz) {
         throw {
-          message: 'Contest not found or access denied',
+          message: 'Audio Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Contest updated successfully',
-        data: updatedContest,
+        message: 'Audio Quiz updated successfully',
+        data: updatedAudioQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -125,31 +136,31 @@ export default class ContestService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Contest | null>> {
+  ): Promise<serviceResponseType<AudioQuiz | null>> {
     try {
-      // const foundContest = await findOne(ContestModel, queries, {
+      // const foundAudioQuiz = await findOne(AudioQuizModel, queries, {
       //   _id: id,
       // });
-      // if (!foundContest) {
+      // if (!foundAudioQuiz) {
       //   throw {
-      //     message: 'Contest not found or access denied',
+      //     message: 'Audio Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedContest = await ContestModel.findOneAndDelete({
+      const deletedAudioQuiz = await AudioQuizModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedContest) {
+      if (!deletedAudioQuiz) {
         throw {
-          message: 'Contest not found or access denied',
+          message: 'Audio Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Contest deleted successfully',
-        data: deletedContest,
+        message: 'Audio Quiz deleted successfully',
+        data: deletedAudioQuiz,
         statusCode: 204,
       };
     } catch (error: any) {

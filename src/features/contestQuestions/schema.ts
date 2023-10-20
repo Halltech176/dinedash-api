@@ -1,6 +1,7 @@
 import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
+import { Contest } from '../contest/schema';
 
 @plugin(mongooseIdValidator)
 @pre<ContestQuestions>('save', function (next) {
@@ -15,8 +16,8 @@ export class ContestQuestions {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
-  @prop({ required: true, ref: () => ContestQuestions })
-  typeId: Ref<ContestQuestions>;
+  @prop({ required: true, ref: () => Contest })
+  typeId: Ref<Contest>;
 
   @prop({ required: true })
   question!: string;

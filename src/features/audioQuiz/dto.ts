@@ -1,31 +1,21 @@
 import {
   IsArray,
-  IsBoolean,
   IsIn,
   IsMongoId,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  Max,
-  Validate,
-  ValidateNested,
-  ValidationArguments,
-  isMongoId,
-  isNotEmpty,
 } from 'class-validator';
-import { QuizZone } from './schema';
+import { AudioQuiz } from './schema';
 import { IDocs } from '../../utilities/templates/types';
-import { Type } from 'class-transformer';
+import { Ref } from '@typegoose/typegoose';
 import { Category } from '../category/schema';
-
-import { Ref, isModel } from '@typegoose/typegoose';
 import { LanguageName } from '../category/dto';
 import { File } from '../file/schema';
 
 const doc: IDocs = {};
 
-export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
+export class CreateAudioQuizDto implements Omit<AudioQuiz, 'createdBy'> {
   @IsString()
   question: string;
 
@@ -59,20 +49,23 @@ export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
   language?: string;
 
   @IsOptional()
+  audioUrl?: string;
+
+  @IsOptional()
   @IsMongoId()
-  image?: Ref<File> | undefined;
+  audioFile?: Ref<File>;
 }
 
 doc['/'] = {
   POST: {
-    schema: CreateQuizZoneDto.name,
+    schema: CreateAudioQuizDto.name,
   },
 };
 
-export class UpdateQuizZoneDto extends CreateQuizZoneDto {}
+export class UpdateAudioQuizDto extends CreateAudioQuizDto {}
 
 doc['/'] = {
   PUT: {
-    schema: UpdateQuizZoneDto.name,
+    schema: UpdateAudioQuizDto.name,
   },
 };

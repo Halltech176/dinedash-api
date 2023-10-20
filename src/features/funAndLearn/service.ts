@@ -15,9 +15,8 @@ export default class FunAndLearnService {
       let foundFunAndLearns;
       if (conditions) {
         foundFunAndLearns = await find(FunAndLearnModel, queries, conditions);
-      }
-      else {
-      foundFunAndLearns = await find(FunAndLearnModel, queries);
+      } else {
+        foundFunAndLearns = await find(FunAndLearnModel, queries);
       }
       return {
         success: true,
@@ -41,7 +40,10 @@ export default class FunAndLearnService {
     // return await FunAndLearnModel.create(data);
     validateDTO(CreateFunAndLearnDto, payload);
     try {
-      const createdFunAndLearn = await FunAndLearnModel.create({ ...payload, ...data });
+      const createdFunAndLearn = await FunAndLearnModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
         message: 'Fun And Learn created successfully',
@@ -65,9 +67,8 @@ export default class FunAndLearnService {
       let foundFunAndLearn;
       if (conditions) {
         foundFunAndLearn = await findOne(FunAndLearnModel, queries, conditions);
-      }
-      else {
-      foundFunAndLearn = await findOne(FunAndLearnModel, queries);
+      } else {
+        foundFunAndLearn = await findOne(FunAndLearnModel, queries);
       }
       return {
         success: true,
@@ -86,7 +87,7 @@ export default class FunAndLearnService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateFunAndLearnDto>,
+    data: Partial<UpdateFunAndLearnDto>,
     others: UpdateQuery<FunAndLearn> & Partial<FunAndLearn> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<FunAndLearn | null>> {

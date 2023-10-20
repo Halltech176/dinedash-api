@@ -1,10 +1,15 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateContestSubmissionsDto, UpdateContestSubmissionsDto } from './dto';
+import {
+  CreateContestSubmissionsDto,
+  UpdateContestSubmissionsDto,
+} from './dto';
 import { ContestSubmissions } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { ContestSubmissionsModel } from '../../models';
+import { ContestQuestionsModel, ContestSubmissionsModel } from '../../models';
+import { fetchQuestionByIds } from '../question/service';
+import { savePoints } from '../../utilities/submit';
 
 export default class ContestSubmissionsService {
   static async fetch(
@@ -14,10 +19,13 @@ export default class ContestSubmissionsService {
     try {
       let foundContestSubmissionss;
       if (conditions) {
-        foundContestSubmissionss = await find(ContestSubmissionsModel, queries, conditions);
-      }
-      else {
-      foundContestSubmissionss = await find(ContestSubmissionsModel, queries);
+        foundContestSubmissionss = await find(
+          ContestSubmissionsModel,
+          queries,
+          conditions,
+        );
+      } else {
+        foundContestSubmissionss = await find(ContestSubmissionsModel, queries);
       }
       return {
         success: true,
@@ -41,7 +49,22 @@ export default class ContestSubmissionsService {
     // return await ContestSubmissionsModel.create(data);
     validateDTO(CreateContestSubmissionsDto, payload);
     try {
-      const createdContestSubmissions = await ContestSubmissionsModel.create({ ...payload, ...data });
+      const validationResults = await await fetchQuestionByIds(
+        ContestQuestionsModel,
+        payload,
+      );
+
+      const createdContestSubmissions = await ContestSubmissionsModel.create({
+        ...payload,
+        questions: validationResults,
+        ...data,
+      });
+
+      const points = createdContestSubmissions.questions.reduce((acc, curr) => {
+        return acc + curr.points;
+      }, 0);
+
+      await savePoints(data.createdBy, points);
       return {
         success: true,
         message: 'Contest Submissions created successfully',
@@ -64,10 +87,16 @@ export default class ContestSubmissionsService {
     try {
       let foundContestSubmissions;
       if (conditions) {
-        foundContestSubmissions = await findOne(ContestSubmissionsModel, queries, conditions);
-      }
-      else {
-      foundContestSubmissions = await findOne(ContestSubmissionsModel, queries);
+        foundContestSubmissions = await findOne(
+          ContestSubmissionsModel,
+          queries,
+          conditions,
+        );
+      } else {
+        foundContestSubmissions = await findOne(
+          ContestSubmissionsModel,
+          queries,
+        );
       }
       return {
         success: true,
@@ -86,7 +115,7 @@ export default class ContestSubmissionsService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateContestSubmissionsDto>,
+    data: Partial<UpdateContestSubmissionsDto>,
     others: UpdateQuery<ContestSubmissions> & Partial<ContestSubmissions> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<ContestSubmissions | null>> {
@@ -98,11 +127,12 @@ export default class ContestSubmissionsService {
       //     statusCode: 404,
       //   };
       // }
-      const updatedContestSubmissions = await ContestSubmissionsModel.findOneAndUpdate(
-        queries,
-        { ...data, ...others },
-        options,
-      );
+      const updatedContestSubmissions =
+        await ContestSubmissionsModel.findOneAndUpdate(
+          queries,
+          { ...data, ...others },
+          options,
+        );
       if (!updatedContestSubmissions) {
         throw {
           message: 'Contest Submissions not found or access denied',
@@ -138,10 +168,11 @@ export default class ContestSubmissionsService {
       //     statusCode: 404,
       //   };
       // }
-      const deletedContestSubmissions = await ContestSubmissionsModel.findOneAndDelete({
-        ...queries,
-        _id: id,
-      });
+      const deletedContestSubmissions =
+        await ContestSubmissionsModel.findOneAndDelete({
+          ...queries,
+          _id: id,
+        });
       if (!deletedContestSubmissions) {
         throw {
           message: 'Contest Submissions not found or access denied',

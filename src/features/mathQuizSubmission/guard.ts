@@ -1,13 +1,13 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateContestQuestions: GuardFunction = async (req, exec) => {
+export const canCreateMathQuizSubmission: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     // throw new Error('Not implemented');
     return {
       auth: true,
-      message: 'Can create ContestQuestions',
+      message: 'Can create MathQuizSubmission',
       query: {
         createdBy: req.user._id,
       },
@@ -21,13 +21,12 @@ export const canCreateContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canFetchContestQuestions: GuardFunction = async (req, exec) => {
+export const canFetchMathQuizSubmission: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super', 'individual']);
-
+    await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can fetch ContestQuestions',
+      message: 'Can fetch MathQuizSubmission',
       query: {},
     };
   } catch (error) {
@@ -39,12 +38,12 @@ export const canFetchContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canUpdateContestQuestions: GuardFunction = async (req, exec) => {
+export const canUpdateMathQuizSubmission: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can update ContestQuestions',
+      message: 'Can update MathQuizSubmission',
       query: {},
     };
   } catch (error) {
@@ -56,12 +55,12 @@ export const canUpdateContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canDeleteContestQuestions: GuardFunction = async (req, exec) => {
+export const canDeleteMathQuizSubmission: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can delete ContestQuestions',
+      message: 'Can delete MathQuizSubmission',
       query: {},
     };
   } catch (error) {

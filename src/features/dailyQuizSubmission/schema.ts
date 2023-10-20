@@ -1,13 +1,13 @@
 import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
-import { ContestQuestions } from '../contestQuestions/schema';
+import { DailyQuiz } from '../dailyQuiz/schema';
 import { Types } from 'mongoose';
 
 export class AnsweredQuestion {
   @prop({
     required: true,
-    ref: () => ContestQuestions,
+    ref: () => DailyQuiz,
   })
   questionID!: Types.ObjectId;
 
@@ -17,12 +17,12 @@ export class AnsweredQuestion {
   @prop({ required: false })
   correct: boolean;
 
-  @prop({ required: false })
+  @prop({ required: false, default: 0 })
   points: number;
 }
 
 @plugin(mongooseIdValidator)
-@pre<ContestSubmissions>('save', function (next) {
+@pre<DailyQuizSubmission>('save', function (next) {
   // this.record = doc.name + '-' + doc.createdBy;
   next();
 })
@@ -30,7 +30,7 @@ export class AnsweredQuestion {
   schemaOptions: { timestamps: true },
   options: { automaticName: true },
 })
-export class ContestSubmissions {
+export class DailyQuizSubmission {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 

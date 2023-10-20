@@ -1,15 +1,15 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateContestQuestions: GuardFunction = async (req, exec) => {
+export const canCreateMathQuiz: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     // throw new Error('Not implemented');
     return {
       auth: true,
-      message: 'Can create ContestQuestions',
+      message: 'Can create MathQuiz',
       query: {
-        createdBy: req.user._id,
+        createdBy: req.user._id
       },
     };
   } catch (error) {
@@ -21,13 +21,12 @@ export const canCreateContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canFetchContestQuestions: GuardFunction = async (req, exec) => {
+export const canFetchMathQuiz: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super', 'individual']);
-
+    await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can fetch ContestQuestions',
+      message: 'Can fetch MathQuiz',
       query: {},
     };
   } catch (error) {
@@ -39,12 +38,12 @@ export const canFetchContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canUpdateContestQuestions: GuardFunction = async (req, exec) => {
+export const canUpdateMathQuiz: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can update ContestQuestions',
+      message: 'Can update MathQuiz',
       query: {},
     };
   } catch (error) {
@@ -56,12 +55,12 @@ export const canUpdateContestQuestions: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canDeleteContestQuestions: GuardFunction = async (req, exec) => {
+export const canDeleteMathQuiz: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can delete ContestQuestions',
+      message: 'Can delete MathQuiz',
       query: {},
     };
   } catch (error) {

@@ -1,27 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateContestDto, UpdateContestDto } from './dto';
-import { Contest } from './schema';
+import { CreateMathQuizDto, UpdateMathQuizDto } from './dto';
+import { MathQuiz } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { ContestModel } from '../../models';
+import { MathQuizModel } from '../../models';
+import LanguageService from '../language/service';
 
-export default class ContestService {
+export default class MathQuizService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundContests;
+      let foundMathQuizs;
       if (conditions) {
-        foundContests = await find(ContestModel, queries, conditions);
+        foundMathQuizs = await find(MathQuizModel, queries, conditions);
       } else {
-        foundContests = await find(ContestModel, queries);
+        foundMathQuizs = await find(MathQuizModel, queries);
       }
       return {
         success: true,
-        message: 'Contests fetched successfully',
-        data: foundContests,
+        message: 'Math Quizs fetched successfully',
+        data: foundMathQuizs,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -34,17 +35,27 @@ export default class ContestService {
   }
 
   static async create(
-    payload: CreateContestDto,
-    data: Partial<Contest> = {},
-  ): Promise<serviceResponseType<Contest>> {
-    // return await ContestModel.create(data);
-    validateDTO(CreateContestDto, payload);
+    payload: CreateMathQuizDto,
+    data: Partial<MathQuiz> = {},
+  ): Promise<serviceResponseType<MathQuiz>> {
+    // return await MathQuizModel.create(data);
+    validateDTO(CreateMathQuizDto, payload);
     try {
-      const createdContest = await ContestModel.create({ ...payload, ...data });
+      const language = await LanguageService.fetchOne({
+        name: payload.language,
+      });
+
+      if (language.data === null) {
+        throw new Error('Please provide a valid language');
+      }
+      const createdMathQuiz = await MathQuizModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
-        message: 'Contest created successfully',
-        data: createdContest,
+        message: 'Math Quiz created successfully',
+        data: createdMathQuiz,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -61,16 +72,16 @@ export default class ContestService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundContest;
+      let foundMathQuiz;
       if (conditions) {
-        foundContest = await findOne(ContestModel, queries, conditions);
+        foundMathQuiz = await findOne(MathQuizModel, queries, conditions);
       } else {
-        foundContest = await findOne(ContestModel, queries);
+        foundMathQuiz = await findOne(MathQuizModel, queries);
       }
       return {
         success: true,
-        message: 'Contest fetched successfully',
-        data: foundContest,
+        message: 'Math Quiz fetched successfully',
+        data: foundMathQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -84,33 +95,33 @@ export default class ContestService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial<UpdateContestDto>,
-    others: UpdateQuery<Contest> & Partial<Contest> = {},
+    data: Partial<UpdateMathQuizDto>,
+    others: UpdateQuery<MathQuiz> & Partial<MathQuiz> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Contest | null>> {
+  ): Promise<serviceResponseType<MathQuiz | null>> {
     try {
-      // const foundContest = await findOne(ContestModel, queries);
-      // if (!foundContest) {
+      // const foundMathQuiz = await findOne(MathQuizModel, queries);
+      // if (!foundMathQuiz) {
       //   throw {
-      //     message: 'Contest not found or access denied',
+      //     message: 'Math Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedContest = await ContestModel.findOneAndUpdate(
+      const updatedMathQuiz = await MathQuizModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedContest) {
+      if (!updatedMathQuiz) {
         throw {
-          message: 'Contest not found or access denied',
+          message: 'Math Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Contest updated successfully',
-        data: updatedContest,
+        message: 'Math Quiz updated successfully',
+        data: updatedMathQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -125,31 +136,31 @@ export default class ContestService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Contest | null>> {
+  ): Promise<serviceResponseType<MathQuiz | null>> {
     try {
-      // const foundContest = await findOne(ContestModel, queries, {
+      // const foundMathQuiz = await findOne(MathQuizModel, queries, {
       //   _id: id,
       // });
-      // if (!foundContest) {
+      // if (!foundMathQuiz) {
       //   throw {
-      //     message: 'Contest not found or access denied',
+      //     message: 'Math Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedContest = await ContestModel.findOneAndDelete({
+      const deletedMathQuiz = await MathQuizModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedContest) {
+      if (!deletedMathQuiz) {
         throw {
-          message: 'Contest not found or access denied',
+          message: 'Math Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Contest deleted successfully',
-        data: deletedContest,
+        message: 'Math Quiz deleted successfully',
+        data: deletedMathQuiz,
         statusCode: 204,
       };
     } catch (error: any) {

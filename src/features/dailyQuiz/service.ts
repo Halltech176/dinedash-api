@@ -1,27 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateContestDto, UpdateContestDto } from './dto';
-import { Contest } from './schema';
+import { CreateDailyQuizDto, UpdateDailyQuizDto } from './dto';
+import { DailyQuiz } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { ContestModel } from '../../models';
+import { DailyQuizModel } from '../../models';
+import LanguageService from '../language/service';
 
-export default class ContestService {
+export default class DailyQuizService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundContests;
+      let foundDailyQuizs;
       if (conditions) {
-        foundContests = await find(ContestModel, queries, conditions);
+        foundDailyQuizs = await find(DailyQuizModel, queries, conditions);
       } else {
-        foundContests = await find(ContestModel, queries);
+        foundDailyQuizs = await find(DailyQuizModel, queries);
       }
       return {
         success: true,
-        message: 'Contests fetched successfully',
-        data: foundContests,
+        message: 'Daily Quizs fetched successfully',
+        data: foundDailyQuizs,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -34,17 +35,28 @@ export default class ContestService {
   }
 
   static async create(
-    payload: CreateContestDto,
-    data: Partial<Contest> = {},
-  ): Promise<serviceResponseType<Contest>> {
-    // return await ContestModel.create(data);
-    validateDTO(CreateContestDto, payload);
+    payload: CreateDailyQuizDto,
+    data: Partial<DailyQuiz> = {},
+  ): Promise<serviceResponseType<DailyQuiz>> {
+    // return await DailyQuizModel.create(data);
+    validateDTO(CreateDailyQuizDto, payload);
     try {
-      const createdContest = await ContestModel.create({ ...payload, ...data });
+      const language = await LanguageService.fetchOne({
+        name: payload.language,
+      });
+
+      if (language.data === null) {
+        throw new Error('Please provide a valid language');
+      }
+
+      const createdDailyQuiz = await DailyQuizModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
-        message: 'Contest created successfully',
-        data: createdContest,
+        message: 'Daily Quiz created successfully',
+        data: createdDailyQuiz,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -61,16 +73,16 @@ export default class ContestService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundContest;
+      let foundDailyQuiz;
       if (conditions) {
-        foundContest = await findOne(ContestModel, queries, conditions);
+        foundDailyQuiz = await findOne(DailyQuizModel, queries, conditions);
       } else {
-        foundContest = await findOne(ContestModel, queries);
+        foundDailyQuiz = await findOne(DailyQuizModel, queries);
       }
       return {
         success: true,
-        message: 'Contest fetched successfully',
-        data: foundContest,
+        message: 'Daily Quiz fetched successfully',
+        data: foundDailyQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -84,33 +96,33 @@ export default class ContestService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial<UpdateContestDto>,
-    others: UpdateQuery<Contest> & Partial<Contest> = {},
+    data: Partial<UpdateDailyQuizDto>,
+    others: UpdateQuery<DailyQuiz> & Partial<DailyQuiz> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Contest | null>> {
+  ): Promise<serviceResponseType<DailyQuiz | null>> {
     try {
-      // const foundContest = await findOne(ContestModel, queries);
-      // if (!foundContest) {
+      // const foundDailyQuiz = await findOne(DailyQuizModel, queries);
+      // if (!foundDailyQuiz) {
       //   throw {
-      //     message: 'Contest not found or access denied',
+      //     message: 'Daily Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedContest = await ContestModel.findOneAndUpdate(
+      const updatedDailyQuiz = await DailyQuizModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedContest) {
+      if (!updatedDailyQuiz) {
         throw {
-          message: 'Contest not found or access denied',
+          message: 'Daily Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Contest updated successfully',
-        data: updatedContest,
+        message: 'Daily Quiz updated successfully',
+        data: updatedDailyQuiz,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -125,31 +137,31 @@ export default class ContestService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Contest | null>> {
+  ): Promise<serviceResponseType<DailyQuiz | null>> {
     try {
-      // const foundContest = await findOne(ContestModel, queries, {
+      // const foundDailyQuiz = await findOne(DailyQuizModel, queries, {
       //   _id: id,
       // });
-      // if (!foundContest) {
+      // if (!foundDailyQuiz) {
       //   throw {
-      //     message: 'Contest not found or access denied',
+      //     message: 'Daily Quiz not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedContest = await ContestModel.findOneAndDelete({
+      const deletedDailyQuiz = await DailyQuizModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedContest) {
+      if (!deletedDailyQuiz) {
         throw {
-          message: 'Contest not found or access denied',
+          message: 'Daily Quiz not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Contest deleted successfully',
-        data: deletedContest,
+        message: 'Daily Quiz deleted successfully',
+        data: deletedDailyQuiz,
         statusCode: 204,
       };
     } catch (error: any) {

@@ -1,25 +1,25 @@
-import { IsOptional } from 'class-validator';
-import { ContestSubmissions } from './schema';
-import { IDocs} from '../../utilities/templates/types';
-
+import { IsArray, IsOptional } from 'class-validator';
+import { AnsweredQuestion, ContestSubmissions } from './schema';
+import { IDocs } from '../../utilities/templates/types';
 
 const doc: IDocs = {};
 
-
-export class CreateContestSubmissionsDto implements Omit<ContestSubmissions, 'createdBy'> {
+export class CreateContestSubmissionsDto
+  implements Omit<ContestSubmissions, 'createdBy'>
+{
+  @IsArray()
+  questions!: AnsweredQuestion[];
 }
 
-doc["/"] = {
+doc['/'] = {
   POST: {
     schema: CreateContestSubmissionsDto.name,
   },
 };
 
-export class UpdateContestSubmissionsDto implements Omit<CreateContestSubmissionsDto, ''> {
+export class UpdateContestSubmissionsDto extends CreateContestSubmissionsDto {}
 
-}
-
-doc["/"] = {
+doc['/'] = {
   PUT: {
     schema: UpdateContestSubmissionsDto.name,
   },

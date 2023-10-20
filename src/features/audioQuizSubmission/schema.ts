@@ -1,13 +1,13 @@
 import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
-import { ContestQuestions } from '../contestQuestions/schema';
+import { AudioQuiz } from '../audioQuiz/schema';
 import { Types } from 'mongoose';
 
 export class AnsweredQuestion {
   @prop({
     required: true,
-    ref: () => ContestQuestions,
+    ref: () => AudioQuiz,
   })
   questionID!: Types.ObjectId;
 
@@ -22,7 +22,7 @@ export class AnsweredQuestion {
 }
 
 @plugin(mongooseIdValidator)
-@pre<ContestSubmissions>('save', function (next) {
+@pre<AudioQuizSubmission>('save', function (next) {
   // this.record = doc.name + '-' + doc.createdBy;
   next();
 })
@@ -30,7 +30,7 @@ export class AnsweredQuestion {
   schemaOptions: { timestamps: true },
   options: { automaticName: true },
 })
-export class ContestSubmissions {
+export class AudioQuizSubmission {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 

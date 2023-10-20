@@ -2,25 +2,18 @@ import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { Category } from '../category/schema';
-import errorHandler from '../../middlewares/errorHandler';
-import mongoose from 'mongoose';
 import { File } from '../file/schema';
 
 @plugin(mongooseIdValidator)
-@pre<QuizZone>('save', function (next) {
+@pre<QuessTheWord>('save', function (next) {
   // this.record = doc.name + '-' + doc.createdBy;
-
-  if (this.correctOptionIndex > this.options.length + 1) {
-    return next(new Error('Correct option should be less than options length'));
-  }
-
   next();
 })
 @modelOptions({
   schemaOptions: { timestamps: true },
   options: { automaticName: true },
 })
-export class QuizZone {
+export class QuessTheWord {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
@@ -33,16 +26,12 @@ export class QuizZone {
   @prop({ required: true })
   question!: string;
 
-  @prop({ required: true, default: [] })
-  options!: Array<number | string>;
-
   @prop({
     required: true,
-    min: 1,
   })
-  correctOptionIndex: number;
+  answer: string;
 
-  @prop({ required: true })
+  @prop({ required: false, default: '' })
   answerDescription!: string;
 
   @prop({ required: true, default: 10 })
@@ -56,4 +45,7 @@ export class QuizZone {
 
   @prop({ required: false, ref: () => File })
   image?: Ref<File>;
+
+  // @prop({ required: true, immutable: true, unique: true })
+  // public record!: string;
 }

@@ -11,7 +11,7 @@ import { File } from '../file/schema';
   if (this.topUsers > this.winnersPrize.length) {
     next(new Error('Top users cannot be greater than winners prize'));
   }
-  // this.record = doc.name + '-' + doc.createdBy;
+
   next();
 })
 @modelOptions({

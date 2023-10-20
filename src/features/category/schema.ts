@@ -10,6 +10,9 @@ export enum CategoryType {
   FUNANDLEARN = 'funAndLearn',
   DAILYQUIZ = 'dailyQuiz',
   GUESSTHEWORD = 'guessTheWord',
+  MATHQUIZ = 'mathQuiz',
+  AUDIOQUIZ = 'audioQuiz',
+  CONTEST = 'contest',
 }
 
 @plugin(mongooseIdValidator)

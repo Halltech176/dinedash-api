@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 import QuizSettingsService from '../quizSettings/service';
 import LanguageService from '../language/service';
 
-interface Payload {
+export interface Payload {
   questions: any[];
 }
 

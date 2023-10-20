@@ -9,7 +9,7 @@ export const canCreateContest: GuardFunction = async (req, exec) => {
       auth: true,
       message: 'Can create Contest',
       query: {
-        createdBy: req.user._id
+        createdBy: req.user._id,
       },
     };
   } catch (error) {
@@ -23,7 +23,7 @@ export const canCreateContest: GuardFunction = async (req, exec) => {
 
 export const canFetchContest: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     return {
       auth: true,
       message: 'Can fetch Contest',
