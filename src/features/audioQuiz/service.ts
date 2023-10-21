@@ -5,7 +5,6 @@ import { AudioQuiz } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { AudioQuizModel } from '../../models';
-import LanguageService from '../language/service';
 
 export default class AudioQuizService {
   static async fetch(
@@ -41,13 +40,6 @@ export default class AudioQuizService {
     // return await AudioQuizModel.create(data);
     validateDTO(CreateAudioQuizDto, payload);
     try {
-      const language = await LanguageService.fetchOne({
-        name: payload.language,
-      });
-
-      if (language.data === null) {
-        throw new Error('Please provide a valid language');
-      }
       const createdAudioQuiz = await AudioQuizModel.create({
         ...payload,
         ...data,

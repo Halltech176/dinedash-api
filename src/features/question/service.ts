@@ -7,7 +7,6 @@ import { validateDTO } from '../../middlewares/validate';
 import { QuestionModel } from '../../models';
 import { Model } from 'mongoose';
 import QuizSettingsService from '../quizSettings/service';
-import LanguageService from '../language/service';
 
 export interface Payload {
   questions: any[];
@@ -95,13 +94,6 @@ export default class QuestionService {
     // return await QuestionModel.create(data);
     validateDTO(CreateQuestionDto, payload);
     try {
-      const language = await LanguageService.fetchOne({
-        name: payload.language,
-      });
-
-      if (language.data === null) {
-        throw new Error('Please provide a valid language');
-      }
       const createdQuestion = await QuestionModel.create({
         ...payload,
         ...data,

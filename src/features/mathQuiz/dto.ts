@@ -12,46 +12,11 @@ import { LanguageName } from '../category/dto';
 import { Ref } from '@typegoose/typegoose';
 import { Category } from '../category/schema';
 import { File } from '../file/schema';
+import { QuizDto } from '../../utilities/schema';
 
 const doc: IDocs = {};
 
-export class CreateMathQuizDto implements Omit<MathQuiz, 'createdBy'> {
-  @IsString()
-  question: string;
-
-  @IsArray()
-  options: Array<number | string>;
-
-  @IsOptional()
-  @IsNumber()
-  points?: number;
-
-  @IsString()
-  answerDescription: string;
-
-  @IsNumber()
-  correctOptionIndex: number;
-
-  @IsMongoId()
-  category: Ref<Category>;
-
-  @IsMongoId()
-  subCategory: Ref<Category>;
-
-  @IsOptional()
-  @IsNumber()
-  level?: number | undefined;
-
-  @IsOptional()
-  @IsIn(LanguageName, {
-    message: 'Please provide a valid language name',
-  })
-  language?: string;
-
-  @IsOptional()
-  @IsMongoId()
-  image?: Ref<File> | undefined;
-}
+export class CreateMathQuizDto extends QuizDto {}
 
 doc['/'] = {
   POST: {

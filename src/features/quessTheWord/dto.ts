@@ -12,47 +12,11 @@ import { Category } from '../category/schema';
 import { Ref } from '@typegoose/typegoose';
 import { LanguageName } from '../category/dto';
 import { File } from '../file/schema';
+import { QuizDto } from '../../utilities/schema';
 
 const doc: IDocs = {};
 
-export class CreateQuessTheWordDto implements Omit<QuessTheWord, 'createdBy'> {
-  @IsString()
-  question: string;
-
-  @IsArray()
-  options: Array<number | string>;
-
-  @IsOptional()
-  @IsNumber()
-  points?: number;
-
-  @IsOptional()
-  @IsString()
-  answerDescription: string;
-
-  @IsString()
-  answer: string;
-
-  @IsMongoId()
-  category: Ref<Category>;
-
-  @IsMongoId()
-  subCategory: Ref<Category>;
-
-  @IsOptional()
-  @IsNumber()
-  level?: number | undefined;
-
-  @IsOptional()
-  @IsIn(LanguageName, {
-    message: 'Please provide a valid language name',
-  })
-  language?: string;
-
-  @IsOptional()
-  @IsMongoId()
-  image?: Ref<File> | undefined;
-}
+export class CreateQuessTheWordDto extends QuizDto {}
 
 doc['/'] = {
   POST: {

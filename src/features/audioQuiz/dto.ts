@@ -10,44 +10,13 @@ import { AudioQuiz } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Ref } from '@typegoose/typegoose';
 import { Category } from '../category/schema';
-import { LanguageName } from '../category/dto';
 import { File } from '../file/schema';
+import { Language } from '../language/schema';
+import { QuizDto } from '../../utilities/schema';
 
 const doc: IDocs = {};
 
-export class CreateAudioQuizDto implements Omit<AudioQuiz, 'createdBy'> {
-  @IsString()
-  question: string;
-
-  @IsArray()
-  options: Array<number | string>;
-
-  @IsOptional()
-  @IsNumber()
-  points?: number;
-
-  @IsString()
-  answerDescription: string;
-
-  @IsNumber()
-  correctOptionIndex: number;
-
-  @IsMongoId()
-  category: Ref<Category>;
-
-  @IsMongoId()
-  subCategory: Ref<Category>;
-
-  @IsOptional()
-  @IsNumber()
-  level?: number | undefined;
-
-  @IsOptional()
-  @IsIn(LanguageName, {
-    message: 'Please provide a valid language name',
-  })
-  language?: string;
-
+export class CreateAudioQuizDto extends QuizDto {
   @IsOptional()
   audioUrl?: string;
 

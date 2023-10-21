@@ -9,35 +9,11 @@ import { ContestQuestions } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Ref } from '@typegoose/typegoose';
 import { Contest } from '../contest/schema';
+import { QuizDto } from '../../utilities/schema';
 
 const doc: IDocs = {};
 
-export class CreateContestQuestionsDto
-  implements Omit<ContestQuestions, 'createdBy'>
-{
-  @IsString()
-  question: string;
-
-  @IsMongoId()
-  typeId: Ref<Contest>;
-
-  @IsArray()
-  options: Array<number | string>;
-
-  @IsOptional()
-  @IsNumber()
-  points?: number;
-
-  @IsOptional()
-  @IsNumber()
-  level?: number;
-
-  @IsString()
-  answerDescription: string;
-
-  @IsNumber()
-  correctOptionIndex: number;
-}
+export class CreateContestQuestionsDto extends QuizDto {}
 
 doc['/'] = {
   POST: {
