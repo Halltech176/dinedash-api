@@ -3,22 +3,14 @@ import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { DailyQuiz } from '../dailyQuiz/schema';
 import { Types } from 'mongoose';
+import { AnsweredQuestionSchema } from '../../utilities/schema';
 
-export class AnsweredQuestion {
+export class AnsweredQuestion extends AnsweredQuestionSchema {
   @prop({
     required: true,
     ref: () => DailyQuiz,
   })
   questionID!: Types.ObjectId;
-
-  @prop({ required: true })
-  option!: number;
-
-  @prop({ required: false })
-  correct: boolean;
-
-  @prop({ required: false, default: 0 })
-  points: number;
 }
 
 @plugin(mongooseIdValidator)

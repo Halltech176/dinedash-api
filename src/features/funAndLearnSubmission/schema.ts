@@ -3,22 +3,14 @@ import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { Types } from 'mongoose';
 import { Question } from '../question/schema';
+import { AnsweredQuestionSchema } from '../../utilities/schema';
 
-export class AnsweredQuestion {
+export class AnsweredQuestion extends AnsweredQuestionSchema {
   @prop({
     required: true,
     ref: () => Question,
   })
   questionID!: Types.ObjectId;
-
-  @prop({ required: true })
-  option!: number;
-
-  @prop({ required: false })
-  correct: boolean;
-
-  @prop({ required: false })
-  points: number;
 }
 
 @plugin(mongooseIdValidator)

@@ -99,3 +99,14 @@ export class QuizDto {
   @IsMongoId()
   image?: Ref<File> | undefined;
 }
+
+export class AnsweredQuestionSchema {
+  @prop({ required: true })
+  option!: number;
+
+  @prop({ required: false })
+  correct: boolean;
+
+  @prop({ required: false })
+  points: number;
+}
