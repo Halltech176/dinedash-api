@@ -3,7 +3,7 @@ import { GuardFunction } from '../../guards';
 
 export const canCreateQuessTheWord: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super', 'individual']);
+    await checkUserTypesService(req, ['super']);
     // throw new Error('Not implemented');
     return {
       auth: true,

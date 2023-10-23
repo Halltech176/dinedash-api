@@ -13,4 +13,7 @@ import { QuizSchema } from '../../utilities/schema';
   schemaOptions: { timestamps: true },
   options: { automaticName: true },
 })
-export class ContestQuestions extends QuizSchema {}
+export class ContestQuestions extends QuizSchema {
+  @prop({ required: true, ref: () => Contest })
+  typeID: Ref<Contest>;
+}

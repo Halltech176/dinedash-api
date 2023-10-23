@@ -1,24 +1,24 @@
 import express, { Request, Response } from 'express';
 import {
-  canCreateQuestion,
-  canDeleteQuestion,
-  canFetchQuestion,
-  canUpdateQuestion,
+  canCreateFunAndLearnQuestion,
+  canDeleteFunAndLearnQuestion,
+  canFetchFunAndLearnQuestion,
+  canUpdateFunAndLearnQuestion,
 } from './guard';
-import QuestionService from './service';
+import FunAndLearnQuestionService from './service';
 import response, {
   throwIfError,
   throwPermIfError,
 } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { UpdateQuestionDto } from './dto';
+import { UpdateFunAndLearnQuestionDto } from './dto';
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canCreateQuestion(req, true));
+  const perm = throwPermIfError(await canCreateFunAndLearnQuestion(req, true));
   const content = throwIfError(
-    await QuestionService.create(req.body, {
+    await FunAndLearnQuestionService.create(req.body, {
       ...perm.query,
     }),
   );
@@ -27,9 +27,9 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.get('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchQuestion(req, false));
+  const perm = throwPermIfError(await canFetchFunAndLearnQuestion(req, false));
   const content = throwIfError(
-    await QuestionService.fetch(req.query, {
+    await FunAndLearnQuestionService.fetch(req.query, {
       ...perm.query,
     }),
   );
@@ -37,9 +37,9 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 router.get('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchQuestion(req, false));
+  const perm = throwPermIfError(await canFetchFunAndLearnQuestion(req, false));
   const content = throwIfError(
-    await QuestionService.fetchOne(req.query, {
+    await FunAndLearnQuestionService.fetchOne(req.query, {
       _id: req.params.id,
       ...perm.query,
     }),
@@ -48,11 +48,11 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 router.put('/:id', async (req: Request, res: Response) => {
-  const body = validateDTO(UpdateQuestionDto, req.body);
+  const body = validateDTO(UpdateFunAndLearnQuestionDto, req.body);
 
-  const perm = throwPermIfError(await canUpdateQuestion(req, false));
+  const perm = throwPermIfError(await canUpdateFunAndLearnQuestion(req, false));
   const content = throwIfError(
-    await QuestionService.updateOne(
+    await FunAndLearnQuestionService.updateOne(
       { _id: req.params.id, ...perm.query },
       body,
     ),
@@ -61,9 +61,9 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 router.delete('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canDeleteQuestion(req, false));
+  const perm = throwPermIfError(await canDeleteFunAndLearnQuestion(req, false));
   const content = throwIfError(
-    await QuestionService.deleteOne(req.params.id, {
+    await FunAndLearnQuestionService.deleteOne(req.params.id, {
       ...perm.query,
     }),
   );

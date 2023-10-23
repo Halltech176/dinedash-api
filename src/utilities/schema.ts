@@ -57,7 +57,11 @@ export class QuizSchema {
   @prop({ required: true, default: 1, min: 1, max: 3 })
   level?: number;
 
-  @prop({ required: false, ref: () => Language })
+  @prop({
+    required: false,
+    ref: () => Language,
+    default: '6530fa895473d72f82118fd1',
+  })
   language?: Ref<Language>;
 
   @prop({ required: false, ref: () => File })

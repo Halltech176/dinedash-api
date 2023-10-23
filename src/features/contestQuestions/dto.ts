@@ -13,7 +13,10 @@ import { QuizDto } from '../../utilities/schema';
 
 const doc: IDocs = {};
 
-export class CreateContestQuestionsDto extends QuizDto {}
+export class CreateContestQuestionsDto extends QuizDto {
+  @IsMongoId()
+  typeID: Ref<Contest>;
+}
 
 doc['/'] = {
   POST: {

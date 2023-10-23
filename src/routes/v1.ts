@@ -6,9 +6,9 @@ import audioQuizSubmission from '../features/audioQuizSubmission/controller';
 
 import audioQuiz from '../features/audioQuiz/controller';
 
-import quessTheWordSubmission from '../features/quessTheWordSubmission/controller';
+import quessTheWordSubmission from '../features/guessTheWordSubmission/controller';
 
-import quessTheWord from '../features/quessTheWord/controller';
+import quessTheWord from '../features/guessTheWord/controller';
 
 import dailyQuizSubmission from '../features/dailyQuizSubmission/controller';
 
@@ -34,7 +34,7 @@ import funAndLearn from '../features/funAndLearn/controller';
 
 import language from '../features/language/controller';
 
-import question from '../features/question/controller';
+import funAndLearnQuestion from '../features/funAndLearnQuestion/controller';
 
 import category from '../features/category/controller';
 
@@ -53,21 +53,21 @@ router.use('/user', user);
 router.use('/file', file);
 router.use('/quizZone', quizZone);
 router.use('/category', category);
-router.use('/question', question);
+router.use('/funAndLearnQuestion', funAndLearnQuestion);
 router.use('/language', language);
 router.use('/funAndLearn', funAndLearn);
 router.use('/QuizZoneSubmission', QuizZoneSubmission);
 router.use('/funAndLearnSubmission', funAndLearnSubmission);
-router.use('/quizSettings', quizSettings);
+router.use('/quizSetting', quizSettings);
 router.use('/contest', contest);
-router.use('/contestSubmissions', contestSubmissions);
+router.use('/contestSubmission', contestSubmissions);
 router.use('/contestQuestions', contestQuestions);
 router.use('/dailyQuiz', dailyQuiz);
 router.use('/mathQuiz', mathQuiz);
 router.use('/mathQuizSubmission', mathQuizSubmission);
 router.use('/dailyQuizSubmission', dailyQuizSubmission);
-router.use('/quessTheWord', quessTheWord);
-router.use('/quessTheWordSubmission', quessTheWordSubmission);
+router.use('/guessTheWord', quessTheWord);
+router.use('/guessTheWordSubmission', quessTheWordSubmission);
 router.use('/audioQuiz', audioQuiz);
 router.use('/audioQuizSubmission', audioQuizSubmission);
 router.use('/', generator);

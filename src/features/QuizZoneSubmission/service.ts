@@ -14,7 +14,7 @@ import {
   QuizZoneSubmissionModel,
 } from '../../models';
 import { Model } from 'mongoose';
-import { fetchQuestionByIds } from '../question/service';
+import { fetchQuestionByIds } from '../../utilities/submit';
 import { savePoints, UpdateLevel } from '../../utilities/submit';
 
 export default class QuizZoneSubmissionService {

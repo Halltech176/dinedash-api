@@ -9,7 +9,7 @@ export const canCreateAudioQuiz: GuardFunction = async (req, exec) => {
       auth: true,
       message: 'Can create AudioQuiz',
       query: {
-        createdBy: req.user._id
+        createdBy: req.user._id,
       },
     };
   } catch (error) {
@@ -23,7 +23,7 @@ export const canCreateAudioQuiz: GuardFunction = async (req, exec) => {
 
 export const canFetchAudioQuiz: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     return {
       auth: true,
       message: 'Can fetch AudioQuiz',

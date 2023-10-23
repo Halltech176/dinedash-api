@@ -9,7 +9,7 @@ import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { MathQuizModel, MathQuizSubmissionModel } from '../../models';
 import { savePoints } from '../../utilities/submit';
-import { fetchQuestionByIds } from '../question/service';
+import { fetchQuestionByIds } from '../../utilities/submit';
 
 export default class MathQuizSubmissionService {
   static async fetch(

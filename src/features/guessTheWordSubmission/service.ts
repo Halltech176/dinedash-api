@@ -9,7 +9,7 @@ import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { QuessTheWordModel, QuessTheWordSubmissionModel } from '../../models';
 import { Model } from 'mongoose';
-import { Payload } from '../question/service';
+import { Payload } from '../../utilities/submit';
 import { savePoints } from '../../utilities/submit';
 
 const fetchQuestionByIds = async <T>(model: Model<T>, payload: Payload) => {

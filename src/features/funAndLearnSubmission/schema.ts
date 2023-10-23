@@ -2,13 +2,13 @@ import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { Types } from 'mongoose';
-import { Question } from '../question/schema';
+import { FunAndLearnQuestion } from '../funAndLearnQuestion/schema';
 import { AnsweredQuestionSchema } from '../../utilities/schema';
 
 export class AnsweredQuestion extends AnsweredQuestionSchema {
   @prop({
     required: true,
-    ref: () => Question,
+    ref: () => FunAndLearnQuestion,
   })
   questionID!: Types.ObjectId;
 }

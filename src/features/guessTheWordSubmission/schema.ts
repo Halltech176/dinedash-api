@@ -1,7 +1,7 @@
 import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
-import { QuessTheWord } from '../quessTheWord/schema';
+import { QuessTheWord } from '../guessTheWord/schema';
 import { Types } from 'mongoose';
 
 export class AnsweredQuestion {

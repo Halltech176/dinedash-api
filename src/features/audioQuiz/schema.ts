@@ -16,7 +16,6 @@ import { QuizSchema } from '../../utilities/schema';
   options: { automaticName: true },
 })
 export class AudioQuiz extends QuizSchema {
-  @prop({ required: true, immutable: true, ref: () => User })
   @prop({ required: false, ref: () => File })
   audioFile?: Ref<File>;
 

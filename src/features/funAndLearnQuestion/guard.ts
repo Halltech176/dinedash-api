@@ -1,7 +1,7 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateQuessTheWordSubmission: GuardFunction = async (
+export const canCreateFunAndLearnQuestion: GuardFunction = async (
   req,
   exec,
 ) => {
@@ -10,7 +10,7 @@ export const canCreateQuessTheWordSubmission: GuardFunction = async (
     // throw new Error('Not implemented');
     return {
       auth: true,
-      message: 'Can create QuessTheWordSubmission',
+      message: 'Can create FunAndLearnQuestion',
       query: {
         createdBy: req.user._id,
       },
@@ -24,15 +24,12 @@ export const canCreateQuessTheWordSubmission: GuardFunction = async (
   }
 };
 
-export const canFetchQuessTheWordSubmission: GuardFunction = async (
-  req,
-  exec,
-) => {
+export const canFetchFunAndLearnQuestion: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super', 'individual']);
     return {
       auth: true,
-      message: 'Can fetch QuessTheWordSubmission',
+      message: 'Can fetch FunAndLearnQuestion',
       query: {},
     };
   } catch (error) {
@@ -44,7 +41,7 @@ export const canFetchQuessTheWordSubmission: GuardFunction = async (
   }
 };
 
-export const canUpdateQuessTheWordSubmission: GuardFunction = async (
+export const canUpdateFunAndLearnQuestion: GuardFunction = async (
   req,
   exec,
 ) => {
@@ -52,7 +49,7 @@ export const canUpdateQuessTheWordSubmission: GuardFunction = async (
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can update QuessTheWordSubmission',
+      message: 'Can update FunAndLearnQuestion',
       query: {},
     };
   } catch (error) {
@@ -64,7 +61,7 @@ export const canUpdateQuessTheWordSubmission: GuardFunction = async (
   }
 };
 
-export const canDeleteQuessTheWordSubmission: GuardFunction = async (
+export const canDeleteFunAndLearnQuestion: GuardFunction = async (
   req,
   exec,
 ) => {
@@ -72,7 +69,7 @@ export const canDeleteQuessTheWordSubmission: GuardFunction = async (
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can delete QuessTheWordSubmission',
+      message: 'Can delete FunAndLearnQuestion',
       query: {},
     };
   } catch (error) {

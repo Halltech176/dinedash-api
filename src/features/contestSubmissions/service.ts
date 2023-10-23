@@ -8,7 +8,7 @@ import { ContestSubmissions } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { ContestQuestionsModel, ContestSubmissionsModel } from '../../models';
-import { fetchQuestionByIds } from '../question/service';
+import { fetchQuestionByIds } from '../../utilities/submit';
 import { savePoints } from '../../utilities/submit';
 
 export default class ContestSubmissionsService {

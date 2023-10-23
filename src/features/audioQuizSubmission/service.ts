@@ -8,7 +8,7 @@ import { AudioQuizSubmission } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
 import { AudioQuizModel, AudioQuizSubmissionModel } from '../../models';
-import { fetchQuestionByIds } from '../question/service';
+import { fetchQuestionByIds } from '../../utilities/submit';
 import { savePoints } from '../../utilities/submit';
 
 export default class AudioQuizSubmissionService {

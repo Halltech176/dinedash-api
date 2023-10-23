@@ -3,8 +3,8 @@ import { Profile } from './profileModel';
 import { File } from '../features/file/schema';
 import { AudioQuizSubmission } from '../features/audioQuizSubmission/schema';
 import { AudioQuiz } from '../features/audioQuiz/schema';
-import { QuessTheWordSubmission } from '../features/quessTheWordSubmission/schema';
-import { QuessTheWord } from '../features/quessTheWord/schema';
+import { QuessTheWordSubmission } from '../features/guessTheWordSubmission/schema';
+import { QuessTheWord } from '../features/guessTheWord/schema';
 import { DailyQuizSubmission } from '../features/dailyQuizSubmission/schema';
 import { MathQuizSubmission } from '../features/mathQuizSubmission/schema';
 import { MathQuiz } from '../features/mathQuiz/schema';
@@ -17,7 +17,7 @@ import { FunAndLearnSubmission } from '../features/funAndLearnSubmission/schema'
 import { QuizZoneSubmission } from '../features/QuizZoneSubmission/schema';
 import { FunAndLearn } from '../features/funAndLearn/schema';
 import { Language } from '../features/language/schema';
-import { Question } from '../features/question/schema';
+import { FunAndLearnQuestion } from '../features/funAndLearnQuestion/schema';
 import { Category } from '../features/category/schema';
 import { QuizZone } from '../features/quizZone/schema';
 import { Token } from './token';
@@ -49,7 +49,7 @@ export const FunAndLearnSubmissionModel = getModelForClass(
 export const QuizZoneSubmissionModel = getModelForClass(QuizZoneSubmission);
 export const FunAndLearnModel = getModelForClass(FunAndLearn);
 export const LanguageModel = getModelForClass(Language);
-export const QuestionModel = getModelForClass(Question);
+export const FunAndLearnQuestionModel = getModelForClass(FunAndLearnQuestion);
 export const CategoryModel = getModelForClass(Category);
 export const QuizZoneModel = getModelForClass(QuizZone);
 export const FileModel = getModelForClass(File);

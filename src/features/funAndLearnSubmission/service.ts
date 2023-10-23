@@ -7,8 +7,11 @@ import {
 import { FunAndLearnSubmission } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { FunAndLearnSubmissionModel, QuestionModel } from '../../models';
-import { fetchQuestionByIds } from '../question/service';
+import {
+  FunAndLearnSubmissionModel,
+  FunAndLearnQuestionModel,
+} from '../../models';
+import { fetchQuestionByIds } from '../../utilities/submit';
 import { savePoints } from '../../utilities/submit';
 
 export default class FunAndLearnSubmissionService {
@@ -54,7 +57,7 @@ export default class FunAndLearnSubmissionService {
     validateDTO(CreateFunAndLearnSubmissionDto, payload);
     try {
       const validationResults = await fetchQuestionByIds(
-        QuestionModel,
+        FunAndLearnQuestionModel,
         payload,
       );
       const createdFunAndLearnSubmission =

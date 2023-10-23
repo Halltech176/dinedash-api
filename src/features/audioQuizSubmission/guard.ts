@@ -1,15 +1,18 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateAudioQuizSubmission: GuardFunction = async (req, exec) => {
+export const canCreateAudioQuizSubmission: GuardFunction = async (
+  req,
+  exec,
+) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     // throw new Error('Not implemented');
     return {
       auth: true,
       message: 'Can create AudioQuizSubmission',
       query: {
-        createdBy: req.user._id
+        createdBy: req.user._id,
       },
     };
   } catch (error) {
@@ -38,7 +41,10 @@ export const canFetchAudioQuizSubmission: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canUpdateAudioQuizSubmission: GuardFunction = async (req, exec) => {
+export const canUpdateAudioQuizSubmission: GuardFunction = async (
+  req,
+  exec,
+) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
@@ -55,7 +61,10 @@ export const canUpdateAudioQuizSubmission: GuardFunction = async (req, exec) => 
   }
 };
 
-export const canDeleteAudioQuizSubmission: GuardFunction = async (req, exec) => {
+export const canDeleteAudioQuizSubmission: GuardFunction = async (
+  req,
+  exec,
+) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
