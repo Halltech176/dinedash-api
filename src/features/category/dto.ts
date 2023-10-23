@@ -42,7 +42,18 @@ doc['/'] = {
   },
 };
 
-export class UpdateCategoryDto extends CreateCategoryDto {}
+export class UpdateCategoryDto implements CreateCategoryDto {
+  @IsOptional()
+  name: string;
+  @IsOptional()
+  type: CategoryType;
+  @IsOptional()
+  image?: Ref<File> | undefined;
+  @IsOptional()
+  parentCategory?: Ref<Category> | undefined;
+  @IsOptional()
+  language: string;
+}
 
 doc['/'] = {
   PUT: {
