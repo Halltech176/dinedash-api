@@ -33,6 +33,7 @@ export class UpdateUserDto
       | 'type'
       | 'phoneVerified'
       | 'points'
+      | 'quizZoneLevel'
     >
 {
   @IsOptional()

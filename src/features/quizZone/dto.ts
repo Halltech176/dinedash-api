@@ -11,6 +11,7 @@ import {
   Validate,
   ValidateNested,
   ValidationArguments,
+  isMongoId,
   isNotEmpty,
 } from 'class-validator';
 import { QuizZone } from './schema';
@@ -18,44 +19,14 @@ import { IDocs } from '../../utilities/templates/types';
 import { Type } from 'class-transformer';
 import { Category } from '../category/schema';
 
-import { Ref } from '@typegoose/typegoose';
+import { Ref, isModel } from '@typegoose/typegoose';
 import { LanguageName } from '../category/dto';
+import { File } from '../file/schema';
+import { QuizDto } from '../../utilities/schema';
 
 const doc: IDocs = {};
 
-export class CreateQuizZoneDto implements Omit<QuizZone, 'createdBy'> {
-  @IsString()
-  question: string;
-
-  @IsArray()
-  options: Array<number | string>;
-
-  @IsOptional()
-  @IsNumber()
-  points?: number;
-
-  @IsString()
-  answerDescription: string;
-
-  @IsNumber()
-  correctOptionIndex: number;
-
-  @IsMongoId()
-  category: Ref<Category>;
-
-  @IsMongoId()
-  subCategory: Ref<Category>;
-
-  @IsOptional()
-  @IsNumber()
-  level?: number | undefined;
-
-  @IsOptional()
-  @IsIn(LanguageName, {
-    message: 'Please provide a valid language name',
-  })
-  language?: string;
-}
+export class CreateQuizZoneDto extends QuizDto {}
 
 doc['/'] = {
   POST: {

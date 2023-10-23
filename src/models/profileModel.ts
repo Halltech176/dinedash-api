@@ -107,4 +107,7 @@ export class Profile {
 
   @prop({ default: 0 })
   points?: number;
+
+  @prop({ default: 1, required: false })
+  quizZoneLevel?: number;
 }

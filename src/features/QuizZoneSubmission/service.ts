@@ -1,4 +1,4 @@
-import { QueryOptions, UpdateQuery } from 'mongoose';
+import { QueryOptions, Types, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
 import {
   CreateQuizZoneSubmissionDto,
@@ -7,10 +7,15 @@ import {
 import { QuizZoneSubmission } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { QuizZoneModel, QuizZoneSubmissionModel } from '../../models';
+import {
+  ProfileModel,
+  QuizSettingsModel,
+  QuizZoneModel,
+  QuizZoneSubmissionModel,
+} from '../../models';
 import { Model } from 'mongoose';
-import { fetchQuestionByIds } from '../question/service';
-import { savePoints } from '../../utilities/submit';
+import { fetchQuestionByIds } from '../../utilities/submit';
+import { savePoints, UpdateLevel } from '../../utilities/submit';
 
 export default class QuizZoneSubmissionService {
   static async fetch(
@@ -66,6 +71,7 @@ export default class QuizZoneSubmissionService {
       }, 0);
 
       await savePoints(data.createdBy, points);
+      await UpdateLevel(data.createdBy, validationResults, 'quizZone');
 
       return {
         success: true,
