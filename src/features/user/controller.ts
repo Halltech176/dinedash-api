@@ -77,8 +77,6 @@ router.put(
   },
 );
 
-
-
 router.put(
   '/update-status',
   async (

@@ -10,7 +10,7 @@ router.all('/batch*', DataController.batch);
 router.post(
   '/:_type',
   // DataValidator.createSchema,
-  // validateEV,  
+  // validateEV,
   multerUpload.any(),
   DataController.create,
 );
@@ -54,6 +54,5 @@ router.delete(
   // validateEV,
   DataController.deleteOne,
 );
-
 
 export default router;

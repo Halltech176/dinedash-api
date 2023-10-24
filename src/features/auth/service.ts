@@ -141,12 +141,16 @@ export default class AuthService {
         message: 'Password changed successfully',
         data: user,
       };
-    } catch (error: any) {
+    } catch (error) {
+      console.log('error....', error, error.name);
       if (error.name === 'IncorrectPasswordError') {
         return {
           success: false,
           message: 'Incorrect password',
-          data: error,
+          data: {
+            ...error,
+            message: 'Incorrect password',
+          },
         };
       }
       return {
@@ -192,6 +196,7 @@ export default class AuthService {
         data: user,
       };
     } catch (error) {
+      console.log('error....', error);
       return {
         success: false,
         message: error.message,
@@ -228,6 +233,7 @@ export default class AuthService {
         data: null,
       };
     } catch (error) {
+      console.log('error....', error);
       return {
         success: false,
         message: error.message,

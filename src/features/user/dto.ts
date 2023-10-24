@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -31,6 +32,8 @@ export class UpdateUserDto
       | 'lastLogin'
       | 'type'
       | 'phoneVerified'
+      | 'points'
+      | 'quizZoneLevel'
     >
 {
   @IsOptional()

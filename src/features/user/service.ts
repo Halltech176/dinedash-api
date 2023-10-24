@@ -182,6 +182,7 @@ export default class UserService {
         throw new Error('User not found or access denied');
       }
       const otherData: Partial<User> = {};
+
       if (data.email) {
         otherData.emailVerified = false;
       }
@@ -200,5 +201,4 @@ export default class UserService {
       return serviceError(error);
     }
   }
-
 }
