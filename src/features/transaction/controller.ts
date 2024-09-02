@@ -1,20 +1,20 @@
 import express, { Request, Response } from 'express';
-import { canCreateCategory, canDeleteCategory, canFetchCategory, canUpdateCategory } from './guard';
-import CategoryService from './service';
+import { canCreateTransaction, canDeleteTransaction, canFetchTransaction, canUpdateTransaction } from './guard';
+import TransactionService from './service';
 import response, {
   throwIfError,
   throwPermIfError,
 } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { UpdateCategoryDto } from './dto';
+import { UpdateTransactionDto } from './dto';
 
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canCreateCategory(req, true));
+  const perm = throwPermIfError(await canCreateTransaction(req, true));
   const content = throwIfError(
-    await CategoryService.create(req.body, { 
+    await TransactionService.create(req.body, { 
       ...perm.query
      }),
   );
@@ -23,9 +23,9 @@ router.post('/', async (req: Request, res: Response) => {
 
 
 router.get('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchCategory(req, false));
+  const perm = throwPermIfError(await canFetchTransaction(req, false));
   const content = throwIfError(
-    await CategoryService.fetch(req.query, {
+    await TransactionService.fetch(req.query, {
       ...perm.query,
     }),
   );
@@ -34,9 +34,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 
 router.get('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchCategory(req, false));
+  const perm = throwPermIfError(await canFetchTransaction(req, false));
   const content = throwIfError(
-    await CategoryService.fetchOne(req.query, {
+    await TransactionService.fetchOne(req.query, {
       _id: req.params.id,
       ...perm.query,
     }),
@@ -46,20 +46,20 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 
 router.put('/:id', async (req: Request, res: Response) => {
-  const body = validateDTO(UpdateCategoryDto, req.body);
+  const body = validateDTO(UpdateTransactionDto, req.body);
 
-  const perm = throwPermIfError(await canUpdateCategory(req, false));
+  const perm = throwPermIfError(await canUpdateTransaction(req, false));
   const content = throwIfError(
-    await CategoryService.updateOne({ _id: req.params.id, ...perm.query }, body),
+    await TransactionService.updateOne({ _id: req.params.id, ...perm.query }, body),
   );
   return response(res, content.statusCode, content.message, content.data);
 });
 
 
 router.delete('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canDeleteCategory(req, false));
+  const perm = throwPermIfError(await canDeleteTransaction(req, false));
   const content = throwIfError(
-    await CategoryService.deleteOne(req.params.id, {
+    await TransactionService.deleteOne(req.params.id, {
       ...perm.query,
     }),
   );

@@ -1,28 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { Category } from './schema';
+import { CreateOrderDto, UpdateOrderDto } from './dto';
+import { Order } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { CategoryModel } from '../../models';
+import { OrderModel } from '../../models';
 
-export default class CategoryService {
+export default class OrderService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategorys;
+      let foundOrders;
       if (conditions) {
-        foundCategorys = await find(CategoryModel, queries, conditions);
+        foundOrders = await find(OrderModel, queries, conditions);
       }
       else {
-      foundCategorys = await find(CategoryModel, queries);
+      foundOrders = await find(OrderModel, queries);
       }
       return {
         success: true,
-        message: 'Categorys fetched successfully',
-        data: foundCategorys,
+        message: 'Orders fetched successfully',
+        data: foundOrders,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,17 +35,17 @@ export default class CategoryService {
   }
 
   static async create(
-    payload: CreateCategoryDto,
-    data: Partial<Category> = {},
-  ): Promise<serviceResponseType<Category>> {
-    // return await CategoryModel.create(data);
-    validateDTO(CreateCategoryDto, payload);
+    payload: CreateOrderDto,
+    data: Partial<Order> = {},
+  ): Promise<serviceResponseType<Order>> {
+    // return await OrderModel.create(data);
+    validateDTO(CreateOrderDto, payload);
     try {
-      const createdCategory = await CategoryModel.create({ ...payload, ...data });
+      const createdOrder = await OrderModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Category created successfully',
-        data: createdCategory,
+        message: 'Order created successfully',
+        data: createdOrder,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -62,17 +62,17 @@ export default class CategoryService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategory;
+      let foundOrder;
       if (conditions) {
-        foundCategory = await findOne(CategoryModel, queries, conditions);
+        foundOrder = await findOne(OrderModel, queries, conditions);
       }
       else {
-      foundCategory = await findOne(CategoryModel, queries);
+      foundOrder = await findOne(OrderModel, queries);
       }
       return {
         success: true,
-        message: 'Category fetched successfully',
-        data: foundCategory,
+        message: 'Order fetched successfully',
+        data: foundOrder,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -86,33 +86,33 @@ export default class CategoryService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateCategoryDto>,
-    others: UpdateQuery<Category> & Partial<Category> = {},
+    data: Partial< UpdateOrderDto>,
+    others: UpdateQuery<Order> & Partial<Order> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Order | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries);
-      // if (!foundCategory) {
+      // const foundOrder = await findOne(OrderModel, queries);
+      // if (!foundOrder) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Order not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedCategory = await CategoryModel.findOneAndUpdate(
+      const updatedOrder = await OrderModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedCategory) {
+      if (!updatedOrder) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Order not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category updated successfully',
-        data: updatedCategory,
+        message: 'Order updated successfully',
+        data: updatedOrder,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -127,31 +127,31 @@ export default class CategoryService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Order | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries, {
+      // const foundOrder = await findOne(OrderModel, queries, {
       //   _id: id,
       // });
-      // if (!foundCategory) {
+      // if (!foundOrder) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Order not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedCategory = await CategoryModel.findOneAndDelete({
+      const deletedOrder = await OrderModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedCategory) {
+      if (!deletedOrder) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Order not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category deleted successfully',
-        data: deletedCategory,
+        message: 'Order deleted successfully',
+        data: deletedOrder,
         statusCode: 204,
       };
     } catch (error: any) {

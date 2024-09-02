@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Profile } from '../../models/profileModel';
 import { UserTypes } from '../../models/userModel';
-import { IDocs} from '../../utilities/templates/types';
+import { IDocs } from '../../utilities/templates/types';
 import { authPaths } from './guard';
 
 const doc: IDocs = {};
@@ -45,8 +45,8 @@ export class RegisterDto implements Partial<Profile> {
   @IsNotEmpty()
   lastName?: string;
 
-  @IsNotEmpty()
-  type?: UserTypes;
+  // @IsNotEmpty()
+  // type?: UserTypes;
 
   @IsNotEmpty()
   phone?: string | undefined;
@@ -61,7 +61,7 @@ export class LoginDto {
   // export class CreateAuthDto implements Partial<Auth> {
   @IsNotEmpty()
   @IsString()
-  public username!: string;
+  public email!: string;
 
   @IsNotEmpty()
   public password!: string;

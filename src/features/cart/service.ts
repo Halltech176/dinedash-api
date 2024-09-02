@@ -1,28 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { Category } from './schema';
+import { CreateCartDto, UpdateCartDto } from './dto';
+import { Cart } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { CategoryModel } from '../../models';
+import { CartModel } from '../../models';
 
-export default class CategoryService {
+export default class CartService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategorys;
+      let foundCarts;
       if (conditions) {
-        foundCategorys = await find(CategoryModel, queries, conditions);
+        foundCarts = await find(CartModel, queries, conditions);
       }
       else {
-      foundCategorys = await find(CategoryModel, queries);
+      foundCarts = await find(CartModel, queries);
       }
       return {
         success: true,
-        message: 'Categorys fetched successfully',
-        data: foundCategorys,
+        message: 'Carts fetched successfully',
+        data: foundCarts,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,17 +35,17 @@ export default class CategoryService {
   }
 
   static async create(
-    payload: CreateCategoryDto,
-    data: Partial<Category> = {},
-  ): Promise<serviceResponseType<Category>> {
-    // return await CategoryModel.create(data);
-    validateDTO(CreateCategoryDto, payload);
+    payload: CreateCartDto,
+    data: Partial<Cart> = {},
+  ): Promise<serviceResponseType<Cart>> {
+    // return await CartModel.create(data);
+    validateDTO(CreateCartDto, payload);
     try {
-      const createdCategory = await CategoryModel.create({ ...payload, ...data });
+      const createdCart = await CartModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Category created successfully',
-        data: createdCategory,
+        message: 'Cart created successfully',
+        data: createdCart,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -62,17 +62,17 @@ export default class CategoryService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategory;
+      let foundCart;
       if (conditions) {
-        foundCategory = await findOne(CategoryModel, queries, conditions);
+        foundCart = await findOne(CartModel, queries, conditions);
       }
       else {
-      foundCategory = await findOne(CategoryModel, queries);
+      foundCart = await findOne(CartModel, queries);
       }
       return {
         success: true,
-        message: 'Category fetched successfully',
-        data: foundCategory,
+        message: 'Cart fetched successfully',
+        data: foundCart,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -86,33 +86,33 @@ export default class CategoryService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateCategoryDto>,
-    others: UpdateQuery<Category> & Partial<Category> = {},
+    data: Partial< UpdateCartDto>,
+    others: UpdateQuery<Cart> & Partial<Cart> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Cart | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries);
-      // if (!foundCategory) {
+      // const foundCart = await findOne(CartModel, queries);
+      // if (!foundCart) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Cart not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedCategory = await CategoryModel.findOneAndUpdate(
+      const updatedCart = await CartModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedCategory) {
+      if (!updatedCart) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Cart not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category updated successfully',
-        data: updatedCategory,
+        message: 'Cart updated successfully',
+        data: updatedCart,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -127,31 +127,31 @@ export default class CategoryService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Cart | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries, {
+      // const foundCart = await findOne(CartModel, queries, {
       //   _id: id,
       // });
-      // if (!foundCategory) {
+      // if (!foundCart) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Cart not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedCategory = await CategoryModel.findOneAndDelete({
+      const deletedCart = await CartModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedCategory) {
+      if (!deletedCart) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Cart not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category deleted successfully',
-        data: deletedCategory,
+        message: 'Cart deleted successfully',
+        data: deletedCart,
         statusCode: 204,
       };
     } catch (error: any) {

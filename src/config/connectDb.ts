@@ -13,7 +13,7 @@ mongoose.Promise = Promise;
 
 const connectDb = async (): Promise<void> => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, option);
+    await mongoose.connect('mongodb://localhost:27017/dinedash', option);
     log.info('Database connected successfully');
     mongoose.plugin(uniqueValidator);
   } catch (error) {

@@ -101,6 +101,7 @@ export class User {
     enum: UserTypes,
     immutable: true,
     required: true,
+    default: UserTypes.INDIVIDUAL,
   })
   type!: UserTypes;
 

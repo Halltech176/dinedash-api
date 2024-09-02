@@ -87,12 +87,6 @@ export class Profile {
   @prop()
   dateOfBirth?: Date;
 
-  @prop({ type: () => [Education] })
-  education?: Education[];
-
-  @prop({ type: () => [Experience] })
-  experience?: Experience[];
-
   @prop()
   bio?: string;
 
@@ -104,10 +98,4 @@ export class Profile {
 
   @prop()
   accountName?: string;
-
-  @prop({ default: 0 })
-  points?: number;
-
-  @prop({ default: 1, required: false })
-  quizZoneLevel?: number;
 }

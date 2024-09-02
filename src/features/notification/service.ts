@@ -1,28 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { Category } from './schema';
+import { CreateNotificationDto, UpdateNotificationDto } from './dto';
+import { Notification } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { CategoryModel } from '../../models';
+import { NotificationModel } from '../../models';
 
-export default class CategoryService {
+export default class NotificationService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategorys;
+      let foundNotifications;
       if (conditions) {
-        foundCategorys = await find(CategoryModel, queries, conditions);
+        foundNotifications = await find(NotificationModel, queries, conditions);
       }
       else {
-      foundCategorys = await find(CategoryModel, queries);
+      foundNotifications = await find(NotificationModel, queries);
       }
       return {
         success: true,
-        message: 'Categorys fetched successfully',
-        data: foundCategorys,
+        message: 'Notifications fetched successfully',
+        data: foundNotifications,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,17 +35,17 @@ export default class CategoryService {
   }
 
   static async create(
-    payload: CreateCategoryDto,
-    data: Partial<Category> = {},
-  ): Promise<serviceResponseType<Category>> {
-    // return await CategoryModel.create(data);
-    validateDTO(CreateCategoryDto, payload);
+    payload: CreateNotificationDto,
+    data: Partial<Notification> = {},
+  ): Promise<serviceResponseType<Notification>> {
+    // return await NotificationModel.create(data);
+    validateDTO(CreateNotificationDto, payload);
     try {
-      const createdCategory = await CategoryModel.create({ ...payload, ...data });
+      const createdNotification = await NotificationModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Category created successfully',
-        data: createdCategory,
+        message: 'Notification created successfully',
+        data: createdNotification,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -62,17 +62,17 @@ export default class CategoryService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategory;
+      let foundNotification;
       if (conditions) {
-        foundCategory = await findOne(CategoryModel, queries, conditions);
+        foundNotification = await findOne(NotificationModel, queries, conditions);
       }
       else {
-      foundCategory = await findOne(CategoryModel, queries);
+      foundNotification = await findOne(NotificationModel, queries);
       }
       return {
         success: true,
-        message: 'Category fetched successfully',
-        data: foundCategory,
+        message: 'Notification fetched successfully',
+        data: foundNotification,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -86,33 +86,33 @@ export default class CategoryService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateCategoryDto>,
-    others: UpdateQuery<Category> & Partial<Category> = {},
+    data: Partial< UpdateNotificationDto>,
+    others: UpdateQuery<Notification> & Partial<Notification> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Notification | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries);
-      // if (!foundCategory) {
+      // const foundNotification = await findOne(NotificationModel, queries);
+      // if (!foundNotification) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Notification not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedCategory = await CategoryModel.findOneAndUpdate(
+      const updatedNotification = await NotificationModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedCategory) {
+      if (!updatedNotification) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Notification not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category updated successfully',
-        data: updatedCategory,
+        message: 'Notification updated successfully',
+        data: updatedNotification,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -127,31 +127,31 @@ export default class CategoryService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Notification | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries, {
+      // const foundNotification = await findOne(NotificationModel, queries, {
       //   _id: id,
       // });
-      // if (!foundCategory) {
+      // if (!foundNotification) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Notification not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedCategory = await CategoryModel.findOneAndDelete({
+      const deletedNotification = await NotificationModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedCategory) {
+      if (!deletedNotification) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Notification not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category deleted successfully',
-        data: deletedCategory,
+        message: 'Notification deleted successfully',
+        data: deletedNotification,
         statusCode: 204,
       };
     } catch (error: any) {

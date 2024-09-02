@@ -8,7 +8,7 @@ import {
   VerifyEmailResendDto,
   VerifyToken,
 } from './dto';
-import { AllUserType, UserType } from '../../models/userModel';
+import { AllUserType, UserType, UserTypes } from '../../models/userModel';
 import { serviceResponseType } from '../../utilities/response';
 import { genToken, saveToken, verifyToken } from '../../utilities/token';
 import AuthTemplates, {
@@ -22,7 +22,7 @@ export default class AuthService {
   static async login(data: LoginDto): Promise<serviceResponseType> {
     try {
       const { user, error } = await UserModel.authenticate()(
-        data.username,
+        data.email,
         data.password,
       );
       const theUser = user as UserType;
@@ -96,6 +96,7 @@ export default class AuthService {
           _id: profile._id,
           profile: profile._id,
           email,
+          type: UserTypes.INDIVIDUAL,
         }),
         password,
       );
@@ -103,9 +104,9 @@ export default class AuthService {
       profile.createdBy = user._id;
       await profile.save();
 
-      console.log('user', user._id, profile);
-      // if (profile.type === 'artisan')
-      // await welcomeTemplate(user.email, profile);
+      await this.sendVerificationEmail({
+        email,
+      });
 
       return {
         success: true,
@@ -294,8 +295,7 @@ export default class AuthService {
       if (!user) {
         return {
           success: false,
-          message:
-            'If an account with this email exists, an email has been sent to you.',
+          message: 'Invalid registration email',
           data: null,
         };
       }

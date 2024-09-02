@@ -25,24 +25,15 @@ const payload = {
 
 const superAdminPermissions: string[] = ['assign:role'];
 
-const universityPermissions: string | string[] = [];
-
 const companyPermissions: string | string[] = [];
 const roles = {
-  'university-admin': [...crudModelPermssions(universityPermissions)],
   'company-admin': [...crudModelPermssions(companyPermissions)],
-  'university-staff': [...crudModelPermssions(universityPermissions, 'r')],
   'company-staff': [...crudModelPermssions(companyPermissions, 'r')],
 };
 
 // console.log('roles', roles);
 const seed = async (): Promise<void> => {
   try {
-    // const service = Promise.all([DojahService.subscribeToService()]);
-    // service.then((res) => {
-    //   console.log('res', res);
-    // });
-
     const allModels = await importAllModels();
     Object.keys(allModels).forEach((model: string) => {
       const permissionsM = crudModelPermssions(model);

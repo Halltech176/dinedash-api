@@ -1,28 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { Category } from './schema';
+import { CreateMenuDto, UpdateMenuDto } from './dto';
+import { Menu } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { CategoryModel } from '../../models';
+import { MenuModel } from '../../models';
 
-export default class CategoryService {
+export default class MenuService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategorys;
+      let foundMenus;
       if (conditions) {
-        foundCategorys = await find(CategoryModel, queries, conditions);
+        foundMenus = await find(MenuModel, queries, conditions);
       }
       else {
-      foundCategorys = await find(CategoryModel, queries);
+      foundMenus = await find(MenuModel, queries);
       }
       return {
         success: true,
-        message: 'Categorys fetched successfully',
-        data: foundCategorys,
+        message: 'Menus fetched successfully',
+        data: foundMenus,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,17 +35,17 @@ export default class CategoryService {
   }
 
   static async create(
-    payload: CreateCategoryDto,
-    data: Partial<Category> = {},
-  ): Promise<serviceResponseType<Category>> {
-    // return await CategoryModel.create(data);
-    validateDTO(CreateCategoryDto, payload);
+    payload: CreateMenuDto,
+    data: Partial<Menu> = {},
+  ): Promise<serviceResponseType<Menu>> {
+    // return await MenuModel.create(data);
+    validateDTO(CreateMenuDto, payload);
     try {
-      const createdCategory = await CategoryModel.create({ ...payload, ...data });
+      const createdMenu = await MenuModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Category created successfully',
-        data: createdCategory,
+        message: 'Menu created successfully',
+        data: createdMenu,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -62,17 +62,17 @@ export default class CategoryService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategory;
+      let foundMenu;
       if (conditions) {
-        foundCategory = await findOne(CategoryModel, queries, conditions);
+        foundMenu = await findOne(MenuModel, queries, conditions);
       }
       else {
-      foundCategory = await findOne(CategoryModel, queries);
+      foundMenu = await findOne(MenuModel, queries);
       }
       return {
         success: true,
-        message: 'Category fetched successfully',
-        data: foundCategory,
+        message: 'Menu fetched successfully',
+        data: foundMenu,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -86,33 +86,33 @@ export default class CategoryService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateCategoryDto>,
-    others: UpdateQuery<Category> & Partial<Category> = {},
+    data: Partial< UpdateMenuDto>,
+    others: UpdateQuery<Menu> & Partial<Menu> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Menu | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries);
-      // if (!foundCategory) {
+      // const foundMenu = await findOne(MenuModel, queries);
+      // if (!foundMenu) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Menu not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedCategory = await CategoryModel.findOneAndUpdate(
+      const updatedMenu = await MenuModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedCategory) {
+      if (!updatedMenu) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Menu not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category updated successfully',
-        data: updatedCategory,
+        message: 'Menu updated successfully',
+        data: updatedMenu,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -127,31 +127,31 @@ export default class CategoryService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Menu | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries, {
+      // const foundMenu = await findOne(MenuModel, queries, {
       //   _id: id,
       // });
-      // if (!foundCategory) {
+      // if (!foundMenu) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Menu not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedCategory = await CategoryModel.findOneAndDelete({
+      const deletedMenu = await MenuModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedCategory) {
+      if (!deletedMenu) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Menu not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category deleted successfully',
-        data: deletedCategory,
+        message: 'Menu deleted successfully',
+        data: deletedMenu,
         statusCode: 204,
       };
     } catch (error: any) {

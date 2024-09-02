@@ -8,7 +8,7 @@ import debugServer from 'debug';
 import { createServer } from 'http';
 import app from '../index';
 
-const debug = debugServer(process.env.APP_NAME || "" + ':server');
+const debug = debugServer(process.env.APP_NAME || '' + ':server');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -34,7 +34,7 @@ function normalizePort(val: string) {
  */
 // get port from command line flag if present --port 3000
 const argv = require('minimist')(process.argv.slice(2));
-const port = normalizePort(argv.port || process.env.PORT || '3000')
+const port = normalizePort(argv.port || process.env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -47,7 +47,7 @@ const server = createServer(app);
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error: { syscall: string; code: any; }) {
+function onError(error: { syscall: string; code: any }) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -78,8 +78,6 @@ function onListening() {
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
   debug(`Listening on ${bind}`);
   console.log(`Listening on ${bind}`);
-  // console a clickable localhost link to the server on the terminal
-  console.log(`http://localhost:${port}/static/docs/`);
 }
 
 /**

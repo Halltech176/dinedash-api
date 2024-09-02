@@ -1,39 +1,25 @@
-import { IsIn, IsMongoId, IsOptional, IsString } from 'class-validator';
+import { IsMongoId, IsOptional, IsString } from 'class-validator';
 import { Category } from './schema';
-import { File } from '../file/schema';
 import { IDocs } from '../../utilities/templates/types';
-import { Types } from 'mongoose';
 import { Ref } from '@typegoose/typegoose';
-
-import LanguageData from '../../data/language.json';
-import { CategoryType } from './schema';
-
-export const LanguageName: string[] = LanguageData.map((item) => item.name);
-
-console.log(LanguageName);
+import { File } from '../file/schema';
 
 const doc: IDocs = {};
 
-export class CreateCategoryDto implements Omit<Category, 'createdBy'> {
+export class CreateCategoryDto
+  implements Omit<Required<Category>, 'createdBy'>
+{
   @IsString()
-  name!: string;
+  name: string;
 
   @IsString()
-  type!: CategoryType;
+  description: string;
 
   @IsOptional()
+  parentCategory: Ref<Category>;
+
   @IsMongoId()
-  image?: Ref<File>;
-
-  @IsOptional()
-  @IsMongoId()
-  parentCategory?: Ref<Category>;
-
-  @IsOptional()
-  @IsIn(LanguageName, {
-    message: `Please enter a valid language.`,
-  })
-  language!: string;
+  image: Ref<File>;
 }
 
 doc['/'] = {
@@ -42,21 +28,24 @@ doc['/'] = {
   },
 };
 
-export class UpdateCategoryDto implements CreateCategoryDto {
+export class UpdateCategoryDto implements Omit<CreateCategoryDto, ''> {
   @IsOptional()
   name: string;
+
   @IsOptional()
-  type: CategoryType;
+  description: string;
+
   @IsOptional()
-  image?: Ref<File> | undefined;
+  parentCategory: Ref<Category>;
+
   @IsOptional()
-  parentCategory?: Ref<Category> | undefined;
-  @IsOptional()
-  language: string;
+  image: Ref<File>;
 }
 
-doc['/'] = {
+doc['/:id'] = {
   PUT: {
     schema: UpdateCategoryDto.name,
   },
 };
+
+export const docs = doc;

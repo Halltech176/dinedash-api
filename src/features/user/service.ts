@@ -29,6 +29,7 @@ export default class UserService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
+      console.log({ queries });
       let profile;
       if (conditions) {
         profile = await findOne(ProfileModel, queries, conditions);

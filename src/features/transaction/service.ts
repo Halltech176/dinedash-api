@@ -1,28 +1,28 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { Category } from './schema';
+import { CreateTransactionDto, UpdateTransactionDto } from './dto';
+import { Transaction } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { CategoryModel } from '../../models';
+import { TransactionModel } from '../../models';
 
-export default class CategoryService {
+export default class TransactionService {
   static async fetch(
     queries: { [key: string]: any },
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategorys;
+      let foundTransactions;
       if (conditions) {
-        foundCategorys = await find(CategoryModel, queries, conditions);
+        foundTransactions = await find(TransactionModel, queries, conditions);
       }
       else {
-      foundCategorys = await find(CategoryModel, queries);
+      foundTransactions = await find(TransactionModel, queries);
       }
       return {
         success: true,
-        message: 'Categorys fetched successfully',
-        data: foundCategorys,
+        message: 'Transactions fetched successfully',
+        data: foundTransactions,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -35,17 +35,17 @@ export default class CategoryService {
   }
 
   static async create(
-    payload: CreateCategoryDto,
-    data: Partial<Category> = {},
-  ): Promise<serviceResponseType<Category>> {
-    // return await CategoryModel.create(data);
-    validateDTO(CreateCategoryDto, payload);
+    payload: CreateTransactionDto,
+    data: Partial<Transaction> = {},
+  ): Promise<serviceResponseType<Transaction>> {
+    // return await TransactionModel.create(data);
+    validateDTO(CreateTransactionDto, payload);
     try {
-      const createdCategory = await CategoryModel.create({ ...payload, ...data });
+      const createdTransaction = await TransactionModel.create({ ...payload, ...data });
       return {
         success: true,
-        message: 'Category created successfully',
-        data: createdCategory,
+        message: 'Transaction created successfully',
+        data: createdTransaction,
         statusCode: 201,
       };
     } catch (error: any) {
@@ -62,17 +62,17 @@ export default class CategoryService {
     conditions: {} | undefined = undefined,
   ): Promise<serviceResponseType> {
     try {
-      let foundCategory;
+      let foundTransaction;
       if (conditions) {
-        foundCategory = await findOne(CategoryModel, queries, conditions);
+        foundTransaction = await findOne(TransactionModel, queries, conditions);
       }
       else {
-      foundCategory = await findOne(CategoryModel, queries);
+      foundTransaction = await findOne(TransactionModel, queries);
       }
       return {
         success: true,
-        message: 'Category fetched successfully',
-        data: foundCategory,
+        message: 'Transaction fetched successfully',
+        data: foundTransaction,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -86,33 +86,33 @@ export default class CategoryService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateCategoryDto>,
-    others: UpdateQuery<Category> & Partial<Category> = {},
+    data: Partial< UpdateTransactionDto>,
+    others: UpdateQuery<Transaction> & Partial<Transaction> = {},
     options: QueryOptions = { new: true, runValidators: true },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Transaction | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries);
-      // if (!foundCategory) {
+      // const foundTransaction = await findOne(TransactionModel, queries);
+      // if (!foundTransaction) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Transaction not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const updatedCategory = await CategoryModel.findOneAndUpdate(
+      const updatedTransaction = await TransactionModel.findOneAndUpdate(
         queries,
         { ...data, ...others },
         options,
       );
-      if (!updatedCategory) {
+      if (!updatedTransaction) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Transaction not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category updated successfully',
-        data: updatedCategory,
+        message: 'Transaction updated successfully',
+        data: updatedTransaction,
         statusCode: 200,
       };
     } catch (error: any) {
@@ -127,31 +127,31 @@ export default class CategoryService {
   static async deleteOne(
     id: string,
     queries: { [key: string]: any },
-  ): Promise<serviceResponseType<Category | null>> {
+  ): Promise<serviceResponseType<Transaction | null>> {
     try {
-      // const foundCategory = await findOne(CategoryModel, queries, {
+      // const foundTransaction = await findOne(TransactionModel, queries, {
       //   _id: id,
       // });
-      // if (!foundCategory) {
+      // if (!foundTransaction) {
       //   throw {
-      //     message: 'Category not found or access denied',
+      //     message: 'Transaction not found or access denied',
       //     statusCode: 404,
       //   };
       // }
-      const deletedCategory = await CategoryModel.findOneAndDelete({
+      const deletedTransaction = await TransactionModel.findOneAndDelete({
         ...queries,
         _id: id,
       });
-      if (!deletedCategory) {
+      if (!deletedTransaction) {
         throw {
-          message: 'Category not found or access denied',
+          message: 'Transaction not found or access denied',
           statusCode: 404,
         };
       }
       return {
         success: true,
-        message: 'Category deleted successfully',
-        data: deletedCategory,
+        message: 'Transaction deleted successfully',
+        data: deletedTransaction,
         statusCode: 204,
       };
     } catch (error: any) {

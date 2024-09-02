@@ -16,14 +16,6 @@ const settingsSchema = new Schema(
       ref: 'Company',
     },
     roles: {
-      universityStaff: {
-        type: Schema.Types.ObjectId,
-        ref: 'Role',
-      },
-      universityAdmin: {
-        type: Schema.Types.ObjectId,
-        ref: 'Role',
-      },
       companyStaff: {
         type: Schema.Types.ObjectId,
         ref: 'Role',

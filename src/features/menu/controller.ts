@@ -1,20 +1,20 @@
 import express, { Request, Response } from 'express';
-import { canCreateCategory, canDeleteCategory, canFetchCategory, canUpdateCategory } from './guard';
-import CategoryService from './service';
+import { canCreateMenu, canDeleteMenu, canFetchMenu, canUpdateMenu } from './guard';
+import MenuService from './service';
 import response, {
   throwIfError,
   throwPermIfError,
 } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { UpdateCategoryDto } from './dto';
+import { UpdateMenuDto } from './dto';
 
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canCreateCategory(req, true));
+  const perm = throwPermIfError(await canCreateMenu(req, true));
   const content = throwIfError(
-    await CategoryService.create(req.body, { 
+    await MenuService.create(req.body, { 
       ...perm.query
      }),
   );
@@ -23,9 +23,9 @@ router.post('/', async (req: Request, res: Response) => {
 
 
 router.get('/', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchCategory(req, false));
+  const perm = throwPermIfError(await canFetchMenu(req, false));
   const content = throwIfError(
-    await CategoryService.fetch(req.query, {
+    await MenuService.fetch(req.query, {
       ...perm.query,
     }),
   );
@@ -34,9 +34,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 
 router.get('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canFetchCategory(req, false));
+  const perm = throwPermIfError(await canFetchMenu(req, false));
   const content = throwIfError(
-    await CategoryService.fetchOne(req.query, {
+    await MenuService.fetchOne(req.query, {
       _id: req.params.id,
       ...perm.query,
     }),
@@ -46,20 +46,20 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 
 router.put('/:id', async (req: Request, res: Response) => {
-  const body = validateDTO(UpdateCategoryDto, req.body);
+  const body = validateDTO(UpdateMenuDto, req.body);
 
-  const perm = throwPermIfError(await canUpdateCategory(req, false));
+  const perm = throwPermIfError(await canUpdateMenu(req, false));
   const content = throwIfError(
-    await CategoryService.updateOne({ _id: req.params.id, ...perm.query }, body),
+    await MenuService.updateOne({ _id: req.params.id, ...perm.query }, body),
   );
   return response(res, content.statusCode, content.message, content.data);
 });
 
 
 router.delete('/:id', async (req: Request, res: Response) => {
-  const perm = throwPermIfError(await canDeleteCategory(req, false));
+  const perm = throwPermIfError(await canDeleteMenu(req, false));
   const content = throwIfError(
-    await CategoryService.deleteOne(req.params.id, {
+    await MenuService.deleteOne(req.params.id, {
       ...perm.query,
     }),
   );

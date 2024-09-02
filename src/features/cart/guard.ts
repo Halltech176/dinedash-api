@@ -1,13 +1,13 @@
 import { checkUserTypesService } from '../../middlewares/authentication';
 import { GuardFunction } from '../../guards';
 
-export const canCreateCategory: GuardFunction = async (req, exec) => {
+export const canCreateCart: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     // throw new Error('Not implemented');
     return {
       auth: true,
-      message: 'Can create Category',
+      message: 'Can create Cart',
       query: {
         createdBy: req.user._id
       },
@@ -21,12 +21,12 @@ export const canCreateCategory: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canFetchCategory: GuardFunction = async (req, exec) => {
+export const canFetchCart: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can fetch Category',
+      message: 'Can fetch Cart',
       query: {},
     };
   } catch (error) {
@@ -38,12 +38,12 @@ export const canFetchCategory: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canUpdateCategory: GuardFunction = async (req, exec) => {
+export const canUpdateCart: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can update Category',
+      message: 'Can update Cart',
       query: {},
     };
   } catch (error) {
@@ -55,12 +55,12 @@ export const canUpdateCategory: GuardFunction = async (req, exec) => {
   }
 };
 
-export const canDeleteCategory: GuardFunction = async (req, exec) => {
+export const canDeleteCart: GuardFunction = async (req, exec) => {
   try {
     await checkUserTypesService(req, ['super']);
     return {
       auth: true,
-      message: 'Can delete Category',
+      message: 'Can delete Cart',
       query: {},
     };
   } catch (error) {

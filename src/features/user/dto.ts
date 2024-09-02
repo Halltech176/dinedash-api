@@ -32,8 +32,6 @@ export class UpdateUserDto
       | 'lastLogin'
       | 'type'
       | 'phoneVerified'
-      | 'points'
-      | 'quizZoneLevel'
     >
 {
   @IsOptional()
