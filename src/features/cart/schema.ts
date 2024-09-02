@@ -16,8 +16,11 @@ export class Cart {
   @prop({ required: true, immutable: true, ref: () => User })
   public createdBy!: Ref<User>;
 
+  @prop({ required: true, immutable: true, ref: () => Menu })
+  public menuId!: Ref<Menu>;
+
   @prop({ required: true })
-  items!: Array<{ menuId: Ref<Menu>; quantity: number }>;
+  quantity!: number;
 
   // @prop({ required: true, immutable: true, unique: true })
   // public record!: string;

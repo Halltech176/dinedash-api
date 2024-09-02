@@ -1,5 +1,10 @@
 import express, { Request, Response } from 'express';
-import { canCreateOrder, canDeleteOrder, canFetchOrder, canUpdateOrder } from './guard';
+import {
+  canCreateOrder,
+  canDeleteOrder,
+  canFetchOrder,
+  canUpdateOrder,
+} from './guard';
 import OrderService from './service';
 import response, {
   throwIfError,
@@ -8,19 +13,18 @@ import response, {
 import { validateDTO } from '../../middlewares/validate';
 import { UpdateOrderDto } from './dto';
 
-
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
   const perm = throwPermIfError(await canCreateOrder(req, true));
   const content = throwIfError(
-    await OrderService.create(req.body, { 
-      ...perm.query
-     }),
+    await OrderService.create(req.body, {
+      ...perm.query,
+    }),
   );
+
   return response(res, content.statusCode, content.message, content.data);
 });
-
 
 router.get('/', async (req: Request, res: Response) => {
   const perm = throwPermIfError(await canFetchOrder(req, false));
@@ -31,7 +35,6 @@ router.get('/', async (req: Request, res: Response) => {
   );
   return response(res, content.statusCode, content.message, content.data);
 });
-
 
 router.get('/:id', async (req: Request, res: Response) => {
   const perm = throwPermIfError(await canFetchOrder(req, false));
@@ -44,7 +47,6 @@ router.get('/:id', async (req: Request, res: Response) => {
   return response(res, content.statusCode, content.message, content.data);
 });
 
-
 router.put('/:id', async (req: Request, res: Response) => {
   const body = validateDTO(UpdateOrderDto, req.body);
 
@@ -54,7 +56,6 @@ router.put('/:id', async (req: Request, res: Response) => {
   );
   return response(res, content.statusCode, content.message, content.data);
 });
-
 
 router.delete('/:id', async (req: Request, res: Response) => {
   const perm = throwPermIfError(await canDeleteOrder(req, false));

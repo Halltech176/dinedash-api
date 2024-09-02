@@ -3,13 +3,13 @@ import { GuardFunction } from '../../guards';
 
 export const canCreateCart: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
     // throw new Error('Not implemented');
     return {
       auth: true,
       message: 'Can create Cart',
       query: {
-        createdBy: req.user._id
+        createdBy: req.user._id,
       },
     };
   } catch (error) {
@@ -23,7 +23,16 @@ export const canCreateCart: GuardFunction = async (req, exec) => {
 
 export const canFetchCart: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
+    if (req.user.type === 'individual') {
+      return {
+        auth: true,
+        message: 'Can fetch Cart',
+        query: {
+          createdBy: req.user._id,
+        },
+      };
+    }
     return {
       auth: true,
       message: 'Can fetch Cart',
@@ -57,7 +66,17 @@ export const canUpdateCart: GuardFunction = async (req, exec) => {
 
 export const canDeleteCart: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
+
+    if (req.user.type === 'individual') {
+      return {
+        auth: true,
+        message: 'Can delete Cart',
+        query: {
+          createdBy: req.user._id,
+        },
+      };
+    }
     return {
       auth: true,
       message: 'Can delete Cart',

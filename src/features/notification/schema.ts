@@ -24,6 +24,9 @@ export class Notification {
   @prop({ required: true })
   type!: string;
 
+  @prop({ required: true, ref: () => User })
+  userId: Ref<User> | undefined;
+
   // @prop({ required: true, immutable: true, unique: true })
   // public record!: string;
 }

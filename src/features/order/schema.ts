@@ -2,6 +2,7 @@ import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { Cart } from '../cart/schema';
+import { Menu } from '../menu/schema';
 
 // create eneum for Order status
 
@@ -31,9 +32,9 @@ export class Order {
 
   @prop({ required: true })
   items!: Array<{
-    item: Ref<Cart>;
+    item: Ref<Menu>;
     quantity: number;
-    price: number;
+    cartId: Ref<Cart>;
   }>;
 
   @prop({ required: true })

@@ -4,7 +4,8 @@ import { CreateOrderDto, UpdateOrderDto } from './dto';
 import { Order } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { OrderModel } from '../../models';
+import { CartModel, OrderModel } from '../../models';
+import CartService from '../cart/service';
 
 export default class OrderService {
   static async fetch(
@@ -15,10 +16,12 @@ export default class OrderService {
       let foundOrders;
       if (conditions) {
         foundOrders = await find(OrderModel, queries, conditions);
+      } else {
+        foundOrders = await find(OrderModel, queries);
       }
-      else {
-      foundOrders = await find(OrderModel, queries);
-      }
+
+      // remove all order itesm from cart
+
       return {
         success: true,
         message: 'Orders fetched successfully',
@@ -42,6 +45,13 @@ export default class OrderService {
     validateDTO(CreateOrderDto, payload);
     try {
       const createdOrder = await OrderModel.create({ ...payload, ...data });
+
+      const idsToDelete = payload.items.map((item) => item.cartId);
+
+      await CartModel.deleteMany({
+        _id: { $in: idsToDelete },
+      });
+
       return {
         success: true,
         message: 'Order created successfully',
@@ -65,9 +75,8 @@ export default class OrderService {
       let foundOrder;
       if (conditions) {
         foundOrder = await findOne(OrderModel, queries, conditions);
-      }
-      else {
-      foundOrder = await findOne(OrderModel, queries);
+      } else {
+        foundOrder = await findOne(OrderModel, queries);
       }
       return {
         success: true,
@@ -86,7 +95,7 @@ export default class OrderService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateOrderDto>,
+    data: Partial<UpdateOrderDto>,
     others: UpdateQuery<Order> & Partial<Order> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<Order | null>> {

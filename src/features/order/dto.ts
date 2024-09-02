@@ -3,18 +3,18 @@ import { Order, OrderStatus } from './schema';
 import { IDocs } from '../../utilities/templates/types';
 import { Ref } from '@typegoose/typegoose';
 import { Cart } from '../cart/schema';
+import { Menu } from '../menu/schema';
 
 const doc: IDocs = {};
 
-export class CreateOrderDto implements Omit<Required<Order>, 'createdBy'> {
+export class CreateOrderDto
+  implements Omit<Required<Order>, 'createdBy' | 'status'>
+{
   @IsArray()
-  items: { item: Ref<Cart>; quantity: number; price: number }[];
+  items: { item: Ref<Menu>; quantity: number; cartId: Ref<Cart> }[];
 
   @IsNumber()
   totalPrice: number;
-
-  @IsString()
-  status: OrderStatus;
 
   @IsString()
   address: string;
@@ -30,7 +30,12 @@ export class UpdateOrderDto
   implements Omit<CreateOrderDto, 'totalPrice' | 'status'>
 {
   @IsOptional()
-  items: { item: Ref<Cart>; quantity: number; price: number }[];
+  items: {
+    item: Ref<Menu>;
+    quantity: number;
+    price: number;
+    cartId: Ref<Cart>;
+  }[];
 
   @IsOptional()
   address: string;
