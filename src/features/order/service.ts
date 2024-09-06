@@ -4,8 +4,10 @@ import { CreateOrderDto, UpdateOrderDto } from './dto';
 import { Order } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { CartModel, OrderModel } from '../../models';
+import { CartModel, OrderModel, TransactionModel } from '../../models';
 import CartService from '../cart/service';
+import TransactionService from '../transaction/service';
+import { PaymentMethod, PaymentStatus } from '../transaction/schema';
 
 export default class OrderService {
   static async fetch(
@@ -50,6 +52,16 @@ export default class OrderService {
 
       await CartModel.deleteMany({
         _id: { $in: idsToDelete },
+      });
+
+      await TransactionModel.create({
+        paymentMethod: PaymentMethod.Cash,
+        amount: payload.totalPrice,
+        description: 'Cash Payment for an order',
+        status: PaymentStatus.Pending,
+        orderId: createdOrder._id,
+        file: payload.fileId,
+        createdBy: createdOrder.createdBy,
       });
 
       return {

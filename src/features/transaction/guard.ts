@@ -9,7 +9,7 @@ export const canCreateTransaction: GuardFunction = async (req, exec) => {
       auth: true,
       message: 'Can create Transaction',
       query: {
-        createdBy: req.user._id
+        createdBy: req.user._id,
       },
     };
   } catch (error) {
@@ -23,7 +23,17 @@ export const canCreateTransaction: GuardFunction = async (req, exec) => {
 
 export const canFetchTransaction: GuardFunction = async (req, exec) => {
   try {
-    await checkUserTypesService(req, ['super']);
+    await checkUserTypesService(req, ['super', 'individual']);
+
+    if (req.user.type === 'individual') {
+      return {
+        auth: true,
+        message: 'Can fetch transactions',
+        query: {
+          createdBy: req.user._id,
+        },
+      };
+    }
     return {
       auth: true,
       message: 'Can fetch Transaction',

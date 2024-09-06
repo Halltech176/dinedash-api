@@ -16,6 +16,7 @@ export class CreateTransactionDto
       | 'amount'
       | 'paymentMethod'
       | 'description'
+      | 'file'
     >
 {
   @IsMongoId()
@@ -39,6 +40,7 @@ export class UpdateTransactionDto
       | 'paymentMethod'
       | 'description'
       | 'orderId'
+      | 'file'
     > {}
 
 doc['/:id'] = {

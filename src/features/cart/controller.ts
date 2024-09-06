@@ -29,13 +29,11 @@ router.post('/', async (req: Request, res: Response) => {
     type: 'super',
   });
 
-  console.log({ admin: admin?._id });
-
   await NotificationModel.create({
     message: 'item added to cart',
     type: 'Cart Update',
     userId: admin?._id,
-    createdBy : req.user._id
+    createdBy: req.user._id,
   });
   return response(res, content.statusCode, content.message, content.data);
 });

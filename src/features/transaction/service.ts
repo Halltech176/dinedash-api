@@ -1,10 +1,11 @@
 import { QueryOptions, UpdateQuery } from 'mongoose';
 import { QueryReturn, find, findOne } from '../../utilities/query';
 import { CreateTransactionDto, UpdateTransactionDto } from './dto';
-import { Transaction } from './schema';
+import { PaymentStatus, Transaction } from './schema';
 import { serviceResponseType } from '../../utilities/response';
 import { validateDTO } from '../../middlewares/validate';
-import { TransactionModel } from '../../models';
+import { NotificationModel, OrderModel, TransactionModel } from '../../models';
+import { OrderStatus } from '../order/schema';
 
 export default class TransactionService {
   static async fetch(
@@ -15,9 +16,8 @@ export default class TransactionService {
       let foundTransactions;
       if (conditions) {
         foundTransactions = await find(TransactionModel, queries, conditions);
-      }
-      else {
-      foundTransactions = await find(TransactionModel, queries);
+      } else {
+        foundTransactions = await find(TransactionModel, queries);
       }
       return {
         success: true,
@@ -41,7 +41,10 @@ export default class TransactionService {
     // return await TransactionModel.create(data);
     validateDTO(CreateTransactionDto, payload);
     try {
-      const createdTransaction = await TransactionModel.create({ ...payload, ...data });
+      const createdTransaction = await TransactionModel.create({
+        ...payload,
+        ...data,
+      });
       return {
         success: true,
         message: 'Transaction created successfully',
@@ -65,9 +68,8 @@ export default class TransactionService {
       let foundTransaction;
       if (conditions) {
         foundTransaction = await findOne(TransactionModel, queries, conditions);
-      }
-      else {
-      foundTransaction = await findOne(TransactionModel, queries);
+      } else {
+        foundTransaction = await findOne(TransactionModel, queries);
       }
       return {
         success: true,
@@ -86,7 +88,7 @@ export default class TransactionService {
 
   static async updateOne(
     queries: { [key: string]: any; _id: string },
-    data: Partial< UpdateTransactionDto>,
+    data: Partial<UpdateTransactionDto>,
     others: UpdateQuery<Transaction> & Partial<Transaction> = {},
     options: QueryOptions = { new: true, runValidators: true },
   ): Promise<serviceResponseType<Transaction | null>> {
@@ -109,6 +111,82 @@ export default class TransactionService {
           statusCode: 404,
         };
       }
+      return {
+        success: true,
+        message: 'Transaction updated successfully',
+        data: updatedTransaction,
+        statusCode: 200,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message,
+        data: error,
+      };
+    }
+  }
+
+  static async approvePayment(
+    queries: { [key: string]: any; _id: string },
+    data: Partial<UpdateTransactionDto>,
+    others: UpdateQuery<Transaction> & Partial<Transaction> = {},
+    options: QueryOptions = { new: true, runValidators: true },
+  ): Promise<serviceResponseType<Transaction | null>> {
+    try {
+      const updatedTransaction = await TransactionModel.findOneAndUpdate(
+        queries,
+        { ...data, ...others, status: PaymentStatus.Completed },
+        options,
+      );
+      if (!updatedTransaction) {
+        throw {
+          message: 'Transaction not found or access denied',
+          statusCode: 404,
+        };
+      }
+
+      await OrderModel.findByIdAndUpdate(updatedTransaction.orderId, {
+        status: OrderStatus.COMPLETED,
+      });
+
+      return {
+        success: true,
+        message: 'Transaction updated successfully',
+        data: updatedTransaction,
+        statusCode: 200,
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.message,
+        data: error,
+      };
+    }
+  }
+
+  static async cancelPayment(
+    queries: { [key: string]: any; _id: string },
+    data: Partial<UpdateTransactionDto>,
+    others: UpdateQuery<Transaction> & Partial<Transaction> = {},
+    options: QueryOptions = { new: true, runValidators: true },
+  ): Promise<serviceResponseType<Transaction | null>> {
+    try {
+      const updatedTransaction = await TransactionModel.findOneAndUpdate(
+        queries,
+        { ...data, ...others, status: PaymentStatus.Failed },
+        options,
+      );
+      if (!updatedTransaction) {
+        throw {
+          message: 'Transaction not found or access denied',
+          statusCode: 404,
+        };
+      }
+
+      await OrderModel.findByIdAndUpdate(updatedTransaction.orderId, {
+        status: OrderStatus.CANCELLED,
+      });
+
       return {
         success: true,
         message: 'Transaction updated successfully',

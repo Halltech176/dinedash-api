@@ -2,10 +2,11 @@ import { prop, plugin, pre, modelOptions, Ref } from '@typegoose/typegoose';
 import mongooseIdValidator from 'mongoose-id-validator2';
 import { User } from '../../models/userModel';
 import { Order } from '../order/schema';
+import { File } from '../file/schema';
 
 // create an enum of payment methods
 
-enum PaymentMethod {
+export enum PaymentMethod {
   Cash = 'cash',
   CreditCard = 'creditCard',
   PayPal = 'paypal',
@@ -13,7 +14,7 @@ enum PaymentMethod {
 
 // create an enum of payment status
 
-enum PaymentStatus {
+export enum PaymentStatus {
   Pending = 'pending',
   Processing = 'processing',
   Completed = 'completed',
@@ -48,8 +49,11 @@ export class Transaction {
   @prop({ required: true })
   orderId!: Ref<Order>;
 
-  @prop({ required: true })
+  @prop({ required: false })
   reference: string;
+
+  @prop({ required: false, ref: () => File })
+  file: Ref<File>;
 
   // @prop({ required: true, immutable: true, unique: true })
   // public record!: string;
