@@ -8,6 +8,9 @@ const option = {
   socketTimeoutMS: 30000,
 };
 
+// local mongodb url
+// mongo:271017://localhostdinedash
+
 mongoose.set('strictQuery', false);
 // mongoose.set('debug', true);
 mongoose.Promise = Promise;
