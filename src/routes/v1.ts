@@ -38,7 +38,7 @@ router.use('/order', order);
 router.use('/cart', cart);
 router.use('/transaction', transaction);
 router.use('/reservation', reservation);
-router.use('/review', review);
+// router.use('/review', review);
 router.use('/', generator);
 
 export default router;
