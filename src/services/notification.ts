@@ -14,16 +14,7 @@ export const gmailTransporter = nodemailer.createTransport({
   },
 });
 
-// export const zohoTransporter = nodemailer.createTransport({
-//   host: 'smtp.zoho.com',
-//   port: 465,
-//   secure: true,
-//   auth: {
-//     user: process.env.MAIL_SENDER,
-//     pass: process.env.MAIL_PASSWORD,
-//   },
-// });
-
+// creating a zoho transporter
 export default {
   gmailTransporter,
   // zohoTransporter,
